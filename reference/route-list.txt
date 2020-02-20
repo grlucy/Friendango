@@ -1,14 +1,24 @@
 GET /login   login page
+
 GET /signup  signup page
+
 GET /logout  logout functionality - not a page
-GET /        main page not logged in
-GET /auth    main page logged in
+
+GET /   main page not logged in
+
+GET /dashboard    main page logged in
+
 GET /writeReview/:movieId   return page to create new review for movie with id=movieId (assuming we get here by clicking an Add Review button on the movie page)
-GET /users/:id    show user page for user with matching id
-GET /movies/:id   show movie page for movie with matching id (not logged in)
-GET /auth/movies/:id   show logged in version of movie page
+
+GET /users/:username    show user page for user with matching username
+
+GET /movies/:title   show movie page for movie with matching title (per OMDB)
+
+GET /movies/:id   show movie page for movie with matching imdbID
+
 GET /reviews/:id   show single review with matching id
 
 POST /api/reviews   save a review to the db
 POST /api/signup   create new user
 POST /api/login    log in
+POST /api/follows   new follower/followee relationship
