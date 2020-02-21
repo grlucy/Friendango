@@ -2,3 +2,95 @@ form.signup,
 form.login {
   margin-top: 50px;
 }
+
+.navbar-custom {
+  background-color: #5b9b69 !important;
+}
+.logo {
+  width: 125px;
+  margin-right: 25px;
+}
+.navbar-search,
+.navbar-search:focus {
+  background-color: #487a5e;
+  border-color: #f8f9fa;
+  color: #ffffff !important;
+}
+nav input {
+  max-width: 125px;
+}
+nav input::-webkit-input-placeholder {
+  color: #d9d9d7 !important;
+}
+nav input:-moz-placeholder {
+  /* Firefox 18- */
+  color: #d9d9d7 !important;
+}
+nav input::-moz-placeholder {
+  /* Firefox 19+ */
+  color: #d9d9d7 !important;
+}
+nav input:-ms-input-placeholder {
+  color: #d9d9d7 !important;
+}
+nav button {
+  border: #ffffff;
+  color: #ffffff;
+}
+.login-body {
+  background-image: url("../../public/images/stripes-light.png");
+}
+.topBotPad {
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.bg-grey {
+  background-color: #d9d9d7;
+}
+.bg-green {
+  background-color: #5b9b69;
+}
+.spacer {
+  min-height: 20px;
+}
+.reviewBox {
+  padding: 20px;
+  border: 1px solid #d9d9d7;
+  border-radius: 0.2rem;
+  background-color: #ffffff;
+}
+.reviewBox p {
+  margin: 0;
+}
+.movie-title:link,
+.movie-title:visited,
+.movie-title:hover,
+.movie-title:active {
+  color: #487a5e;
+  text-decoration: none;
+}
+.user-link:link,
+.user-link:visited,
+.user-link:hover,
+.user-link:active {
+  color: #5b9b69;
+  text-decoration: none;
+}
+.movie-score {
+  padding: 20px;
+  border-radius: 0.2rem;
+  margin-right: 20px;
+  min-width: 87px;
+}
+.movie-score h1 {
+  margin: 0;
+  font-weight: bold;
+}
+.btn-dark {
+  background-color: #5b9b69 !important;
+  border-color: #5b9b69 !important;
+}
+.btn-dark:hover {
+  background-color: #487a5e !important;
+  border-color: #487a5e !important;
+}

@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friendango</title>
+    <!-- JQUERY -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
+    <!-- BOOTSTRAP -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../public/stylesheets/style.css" />
+  </head>
+  <body>
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-custom text-white">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center">
+          <!-- Logo -->
+          <img class="logo" src="../branding/friendango-logo-white-300px.png" />
+          <form class="form-inline my-2 my-lg-0">
+            <div class="input-group input-group-sm">
+              <!-- Search Bar -->
+              <input
+                class="navbar-search form-control form-control-sm"
+                type="search"
+                placeholder="Search..."
+                aria-label="Search"
+              />
+              <div class="input-group-append">
+                <!-- Search Bar Dropdown Button -->
+                <button
+                  type="button"
+                  class="btn btn-outline-light dropdown-toggle dropdown-toggle-split"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Movies</a>
+                  <a class="dropdown-item" href="#">Users</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div id="username-display">
+          <!-- Log In Button -->
+          <button class="btn btn-outline-light btn-sm">
+            Log In
+          </button>
+          <!-- Sign Up Button -->
+          <button class="btn btn-outline-light btn-sm">
+            Sign Up
+          </button>
+        </div>
+      </div>
+    </nav>
+    <!-- Chart Section -->
+    <section class="bg-grey">
+      <div class="container">
+        <div class="row">
+          <div class="col-md-12 text-center topBotPad" id="dashboard-chart">
+            <!-- Chart -->
+            <h1>Insert Chart Here</h1>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- Recent Reviews Section -->
+    <section>
+      <div class="container">
+        <div class="row spacer"></div>
+        <!-- START OF LOOP THROUGH REVIEW DATA -->
+        <div class="row">
+          <div class="col-md-12 reviewBox">
+            <div class="d-flex align-items-start">
+              <div class="bg-grey movie-score text-center">
+                <h1>10</h1>
+              </div>
+              <div>
+                <a href="#" class="movie-title"
+                  ><h3 class="d-inline-block font-weight-bold">
+                    Movie Title
+                  </h3></a
+                >
+                <br />
+                <a href="#" class="user-link"
+                  ><h4 class="d-inline-block font-weight-light">Username</h4></a
+                >
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Inventore assumenda itaque doloremque. Alias in, repellat sequi
+              voluptate reiciendis quos consequatur officia dolor corrupti fuga
+              modi dolores perspiciatis porro commodi consectetur eius odit ipsa
+              nemo expedita exercitationem vel deserunt ab!
+            </p>
+          </div>
+        </div>
+        <div class="row spacer"></div>
+        <!-- END OF ONE LOOP OF REVIEW DATA -->
+        <div class="row">
+          <div class="col-md-12 reviewBox">
+            <div class="d-flex align-items-start">
+              <div class="bg-grey movie-score text-center">
+                <h1>7</h1>
+              </div>
+              <div>
+                <a href="#" class="movie-title"
+                  ><h3 class="d-inline-block font-weight-bold">
+                    Movie Title
+                  </h3></a
+                >
+                <br />
+                <a href="#" class="user-link"
+                  ><h4 class="d-inline-block font-weight-light">Username</h4></a
+                >
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Inventore assumenda itaque doloremque. Alias in, repellat sequi
+              voluptate reiciendis quos consequatur officia dolor corrupti fuga
+              modi dolores perspiciatis porro commodi consectetur eius odit ipsa
+              nemo expedita exercitationem vel deserunt ab!
+            </p>
+          </div>
+        </div>
+        <div class="row spacer"></div>
+        <div class="row">
+          <div class="col-md-12 reviewBox">
+            <div class="d-flex align-items-start">
+              <div class="bg-grey movie-score text-center">
+                <h1>8</h1>
+              </div>
+              <div>
+                <a href="#" class="movie-title"
+                  ><h3 class="d-inline-block font-weight-bold">
+                    Movie Title
+                  </h3></a
+                >
+                <br />
+                <a href="#" class="user-link"
+                  ><h4 class="d-inline-block font-weight-light">Username</h4></a
+                >
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <p>
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Inventore assumenda itaque doloremque. Alias in, repellat sequi
+              voluptate reiciendis quos consequatur officia dolor corrupti fuga
+              modi dolores perspiciatis porro commodi consectetur eius odit ipsa
+              nemo expedita exercitationem vel deserunt ab!
+            </p>
+          </div>
+        </div>
+        <div class="row spacer"></div>
+      </div>
+    </section>
+  </body>
+</html>
