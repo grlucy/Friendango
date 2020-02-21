@@ -54,23 +54,44 @@ module.exports = function(app) {
 
   // Note: Activity 14-12 has some similar routes that might be helpful to look at
 
-  // "Get" route for getting all review scores for movies with release date in the past 3 months
+  // POST /api/reviews   save a review to the db
+  app.post("/api/reviews", function(req, res) {
+    console.log(req.body);
+    db.Review.create({
+      IMDBid: req.body.IMDBid,
+      title: req.body.title,
+      posterURL: req.body.posterURL,
+      reviewText: req.body.reviewText,
+      score: req.body.score,
+      userID: req.body.userID
+    }).then(function(dbNewReview) {
+      res.json(dbNewReview);
+    });
+  });
 
-  // "Get" route for getting 10 most recent reviews and the username associated with them
+  // POST /api/signup   create new user
+  app.post("/api/signup", function(req, res) {
+    console.log(req.body);
+    db.User.create({
+      username: req.body.username,
+      email: req.body.email,
+      password: req.body.password
+    }).then(function(dbNewUser) {
+      res.json(dbNewUser);
+    });
+  });
 
-  // "Get" route for getting logged-in user's username (for the welcome message)
+  // POST /api/login    log in
+  
 
-  // "Get" route for getting all review scores for movies with release date in the past 3 months WRITTEN BY USERS THAT THIS USER FOLLOWS
-
-  // "Get" route for getting 10 most recent reviews WRITTEN BY USERS THAT THIS USER FOLLOWS and the username associated with them
-
-  // "Get" route for getting all reviews for a specific movie (using the imdbID) and the username associated with them
-
-  // "Get" route for getting a specific review (using the review id) and the username associated with it
-
-  // "Get" route for getting all reviews for a specific user and the username associated with them (by joining)
-
-  // "Post" route for creating a review
-
-  // "Post" route for creating a follow relationship between follower and followee
+  // POST /api/follow  create a follower/followee relationship
+  app.post("/api/follow", function(req, res) {
+    console.log(req.body);
+    db.Follow.create({
+      followeeID: req.body.followeeID,
+      followerID: req.body.followerID
+    }).then(function(dbNewFollow) {
+      res.json(dbNewFollow);
+    });
+  });
 };
