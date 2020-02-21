@@ -1,8 +1,4 @@
-form.signup,
-form.login {
-  margin-top: 50px;
-}
-
+/* Navbar Styles */
 .navbar-custom {
   background-color: #5b9b69 !important;
 }
@@ -23,11 +19,9 @@ nav input::-webkit-input-placeholder {
   color: #d9d9d7 !important;
 }
 nav input:-moz-placeholder {
-  /* Firefox 18- */
   color: #d9d9d7 !important;
 }
 nav input::-moz-placeholder {
-  /* Firefox 19+ */
   color: #d9d9d7 !important;
 }
 nav input:-ms-input-placeholder {
@@ -37,6 +31,14 @@ nav button {
   border: #ffffff;
   color: #ffffff;
 }
+.nav-username {
+  color: white;
+  font-size: 15px;
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Main Content Styles */
 .login-body {
   background-image: url("../../public/images/stripes-light.png");
 }
@@ -76,6 +78,9 @@ nav button {
   color: #5b9b69;
   text-decoration: none;
 }
+.share-btn {
+  min-width: 87px;
+}
 .movie-score {
   padding: 20px;
   border-radius: 0.2rem;
@@ -93,4 +98,8 @@ nav button {
 .btn-dark:hover {
   background-color: #487a5e !important;
   border-color: #487a5e !important;
+}
+form.signup,
+form.login {
+  margin-top: 50px;
 }

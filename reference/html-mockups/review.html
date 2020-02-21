@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Friendango</title>
+    <!-- JQUERY -->
+    <script
+      src="https://code.jquery.com/jquery-3.4.1.js"
+      integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="
+      crossorigin="anonymous"
+    ></script>
+    <!-- BOOTSTRAP -->
+    <link
+      rel="stylesheet"
+      href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+      integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+      crossorigin="anonymous"
+    />
+    <script
+      src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+      integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+      crossorigin="anonymous"
+    ></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../../public/stylesheets/style.css" />
+  </head>
+  <body class="login-body">
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-custom text-white">
+      <div class="container">
+        <div class="d-flex flex-wrap align-items-center">
+          <!-- Logo -->
+          <img class="logo" src="../branding/friendango-logo-white-300px.png" />
+          <form class="form-inline mr-3 my-2 my-lg-0">
+            <div class="input-group input-group-sm">
+              <!-- Search Bar -->
+              <input
+                class="navbar-search form-control form-control-sm"
+                type="search"
+                placeholder="Search..."
+                aria-label="Search"
+              />
+              <div class="input-group-append">
+                <!-- Search Bar Dropdown Button -->
+                <button
+                  type="button"
+                  class="btn btn-outline-light dropdown-toggle dropdown-toggle-split"
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
+                  aria-expanded="false"
+                >
+                  <span class="sr-only">Toggle Dropdown</span>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Movies</a>
+                  <a class="dropdown-item" href="#">Users</a>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div id="username-display d-flex flex-wrap align-items-center">
+          <!-- Username -->
+          <p class="nav-username d-inline mr-3">
+            user12345
+          </p>
+          <!-- Sign Out Button -->
+          <button class="btn btn-outline-light btn-sm">
+            Sign Out
+          </button>
+        </div>
+      </div>
+    </nav>
+    <!-- Single Review Section -->
+    <section>
+      <div class="container">
+        <div class="row spacer"></div>
+        <div class="row">
+          <div class="col-md-12 reviewBox">
+            <!-- Share button will copy URL to clipboard -->
+            <button class="btn btn-dark mb-3 share-btn">Share</button>
+            <div class="d-flex align-items-start">
+              <div class="bg-grey movie-score text-center">
+                <h1>
+                  <!-- Insert review score below -->
+                  10
+                </h1>
+              </div>
+              <div>
+                <!-- Link to movie page -->
+                <a href="#" class="movie-title">
+                  <h3 class="d-inline-block font-weight-bold">
+                    <!-- Insert movie title below -->
+                    Movie Title
+                  </h3>
+                </a>
+                <br />
+                <!-- Link to user profile -->
+                <a href="#" class="user-link">
+                  <h4 class="d-inline-block font-weight-light">
+                    <!-- Insert reviewer's username below -->
+                    Username
+                  </h4>
+                </a>
+              </div>
+            </div>
+            <div class="spacer"></div>
+            <p>
+              <!-- Insert review text below -->
+              Lorem ipsum dolor, sit amet consectetur adipisicing elit.
+              Inventore assumenda itaque doloremque. Alias in, repellat sequi
+              voluptate reiciendis quos consequatur officia dolor corrupti fuga
+              modi dolores perspiciatis porro commodi consectetur eius odit ipsa
+              nemo expedita exercitationem vel deserunt ab!
+            </p>
+          </div>
+        </div>
+        <div class="row spacer"></div>
+      </div>
+    </section>
+  </body>
+</html>
