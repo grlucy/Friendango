@@ -103,3 +103,9 @@ form.signup,
 form.login {
   margin-top: 50px;
 }
+.omdb-poster {
+  max-width: 200px;
+}
+.movie-details {
+  max-width: 400px;
+}
