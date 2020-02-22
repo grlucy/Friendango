@@ -27,22 +27,15 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.INTEGER,
       allowNull: false,
       len: [2]
-    },
-    userID: {
-      type: DataTypes.STRING,
-      allowNull: false,
-      references: {
-        model: "User",
-        key: "id"
-      }
     }
   });
 
   Review.associate = function(models) {
-    Review.belongsTo(
-      models.User,
-      { foreignKey: "userID" }
-    );
+    Review.belongsTo(models.User, {
+      foreignKey: {
+        allowNull: false
+      }
+    });
   };
 
   return Review;
