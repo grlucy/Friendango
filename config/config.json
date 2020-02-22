@@ -1,8 +1,8 @@
 {
   "development": {
     "username": "root",
-    "password": "h#191712sPs)7",
-    "database": "friendango_test",
+    "password": null,
+    "database": "friendango",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
