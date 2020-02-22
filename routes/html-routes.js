@@ -34,29 +34,27 @@ module.exports = function(app) {
       res.redirect("/dashboard");
     }
     //get list of 5 most-reviewed movies in our db
-    sequelize.query("SELECT title, imdbId, AVG(score), poster_url FROM review GROUP BY imdbId ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
-    .then( (result, metadata) => {
-      console.log(result);
-      console.log(data);
+    db.sequelize.query("SELECT title, IMDBid, AVG(score) as avgScore, posterURL FROM reviews GROUP BY IMDBid ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
+    .then( ([result, metadata]) => {
+      
       const movies = result;
 
       //get the 10 most recent reviews for the movies returned above
-      const reviewQuery = "SELECT review.id, review_text, score, title, imdbId, username FROM review INNER JOIN users ON review.userId = users.id WHERE ";
+      let reviewQuery = "SELECT reviews.id, reviewText, score, title, IMDBid, username FROM reviews INNER JOIN users ON reviews.UserId = users.id WHERE ";
       movies.forEach( movie => {
-        reviewQuery += "imdbId = " + movie.imdbId + " || ";
+        reviewQuery += `IMDBid = "${movie.IMDBid}" || `;
       });
       reviewQuery = reviewQuery.substring(0, reviewQuery.length - 3);  //remove the "||" after the final imdbId
-      reviewQuery += "ORDER BY review.createdAt DESC LIMIT 10";
+      reviewQuery += "ORDER BY reviews.createdAt DESC LIMIT 10";
 
-      sequelize.query(reviewQuery)
-      .then( (result, metadata) => {
-        console.log(result);
-        console.log(data);  
+      db.sequelize.query(reviewQuery)
+      .then( ([result, metadata]) => { 
         const reviews = result;
         const data = {
           movies: movies,
           reviews: reviews
         };
+        console.log(data);
         
         //call handlebars render with data
         res.render("index", data);
