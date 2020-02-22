@@ -22,6 +22,8 @@
       integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
       crossorigin="anonymous"
     ></script>
+    <!-- Chart.JS -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
     <!-- Custom CSS -->
     <link rel="stylesheet" href="../../public/stylesheets/style.css" />
   </head>
@@ -76,9 +78,9 @@
     <section class="bg-grey">
       <div class="container">
         <div class="row">
-          <div class="col-md-12 text-center topBotPad" id="dashboard-chart">
+          <div class="col-md-12 text-center topBotPad">
             <!-- Chart -->
-            <h1>Insert Chart Here</h1>
+            <canvas id="indexChart" width="400" height="200"></canvas>
           </div>
         </div>
       </div>
@@ -215,5 +217,6 @@
         <!-- END OF ONE LOOP OF REVIEW DATA -->
       </div>
     </section>
+    <script type="text/javascript" src="./indexchart.js"></script>
   </body>
 </html>
