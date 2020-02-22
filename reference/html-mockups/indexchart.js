@@ -1,5 +1,5 @@
 const ctx = document.getElementById("indexChart").getContext("2d");
-const myChart = new Chart(ctx, {
+const indexChart = new Chart(ctx, {
   type: "horizontalBar",
   data: {
     labels: [
