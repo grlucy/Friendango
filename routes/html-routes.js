@@ -1,3 +1,5 @@
+var db = require("../models");
+
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
 
@@ -31,14 +33,35 @@ module.exports = function(app) {
     if (req.user) {
       res.redirect("/dashboard");
     }
-    //get movie data from omdb
-    let queryURL = `http://www.omdbapi.com/?t=${movie}&apikey=692116c8`;
-    axios.get(queryUrl).then(function(res) {
+    //get list of 5 most-reviewed movies in our db
+    sequelize.query("SELECT title, imdbId, AVG(score), poster_url FROM review GROUP BY imdbId ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
+    .then( (result, metadata) => {
+      console.log(result);
+      console.log(data);
+      const movies = result;
 
+      //get the 10 most recent reviews for the movies returned above
+      const reviewQuery = "SELECT review.id, review_text, score, title, imdbId, username FROM review INNER JOIN users ON review.userId = users.id WHERE ";
+      movies.forEach( movie => {
+        reviewQuery += "imdbId = " + movie.imdbId + " || ";
+      });
+      reviewQuery = reviewQuery.substring(0, reviewQuery.length - 3);  //remove the "||" after the final imdbId
+      reviewQuery += "ORDER BY review.createdAt DESC LIMIT 10";
+
+      sequelize.query(reviewQuery)
+      .then( (result, metadata) => {
+        console.log(result);
+        console.log(data);  
+        const reviews = result;
+        const data = {
+          movies: movies,
+          reviews: reviews
+        };
+        
+        //call handlebars render with data
+        res.render("index", data);
+      });
     });
-
-    //get review data from our db
-    //call handlebars render with data
   });
 
   //logged in users at route "/" will redirect here - should serve up index.handlebars, passing logged-in-appropriate data
