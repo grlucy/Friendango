@@ -1,4 +1,4 @@
-const ctx = document.getElementById("indexChart").getContext("2d");
+const ctx = document.getElementById("movieChart").getContext("2d");
 const myChart = new Chart(ctx, {
   type: "horizontalBar",
   data: {
@@ -12,7 +12,7 @@ const myChart = new Chart(ctx, {
     datasets: [
       {
         label: "Average Score",
-        data: [8.7, 7.7, 6.7, 4.8, 2],
+        data: [9.3, 8.6, 7.9, 5, 2],
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -38,16 +38,15 @@ const myChart = new Chart(ctx, {
     scales: {
       xAxes: [
         {
-          ticks: {
-            beginAtZero: true,
-            suggestedMax: 10
+          gridLines: {
+            display: false
           }
         }
       ],
       yAxes: [
         {
-          gridLines: {
-            display: false
+          ticks: {
+            beginAtZero: true
           }
         }
       ]
