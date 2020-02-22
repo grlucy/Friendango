@@ -2,17 +2,11 @@ const ctx = document.getElementById("movieChart").getContext("2d");
 const myChart = new Chart(ctx, {
   type: "horizontalBar",
   data: {
-    labels: [
-      "Sonic The Hedgehog",
-      "The Call of the Wild",
-      "Harley Quinn: Birds of Prey",
-      "The Photograph",
-      "Fantasy Island"
-    ],
+    labels: ["9 - 10", "7 - 8", "5 - 6", "3 - 4", "1 - 2"],
     datasets: [
       {
-        label: "Average Score",
-        data: [9.3, 8.6, 7.9, 5, 2],
+        label: "% of Scores in This Range",
+        data: [65, 20, 0, 5, 10],
         backgroundColor: [
           "rgba(255, 99, 132, 0.6)",
           "rgba(54, 162, 235, 0.6)",
@@ -38,15 +32,19 @@ const myChart = new Chart(ctx, {
     scales: {
       xAxes: [
         {
-          gridLines: {
-            display: false
+          ticks: {
+            beginAtZero: true,
+            max: 100,
+            callback: function(value) {
+              return value + "%";
+            }
           }
         }
       ],
       yAxes: [
         {
-          ticks: {
-            beginAtZero: true
+          gridLines: {
+            display: false
           }
         }
       ]
