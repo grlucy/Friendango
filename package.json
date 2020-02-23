@@ -1,7 +1,7 @@
 {
-  "name": "1-Passport-Example",
+  "name": "Friendango",
   "version": "1.0.0",
-  "description": "",
+  "description": "A social network for movie reviews",
   "main": "server.js",
   "scripts": {
     "test": "npm run lint",
@@ -11,12 +11,14 @@
     "watch": "nodemon server.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Mary Kate White, Gina Lucy, Ben Ferriman",
   "license": "ISC",
   "dependencies": {
+    "axios": "^0.19.2",
     "bcryptjs": "2.4.3",
     "dotenv": "^8.2.0",
     "express": "^4.17.0",
+    "express-handlebars": "^3.1.0",
     "express-session": "^1.16.1",
     "mysql2": "^1.6.5",
     "passport": "^0.4.0",

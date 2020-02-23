@@ -1,3 +1,5 @@
+var db = require("../models");
+
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
 
@@ -5,64 +7,83 @@ var path = require("path");
 var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function(app) {
-  app.get("/", function(req, res) {
-    // If the user already has an account send them to the members page
-    if (req.user) {
-      res.redirect("/members");
-    }
-    res.sendFile(path.join(__dirname, "../public/signup.html"));
-  });
 
+  // Need to render login.handlebars instead of login.html
   app.get("/login", function(req, res) {
-    // If the user already has an account send them to the members page
+    // If the user already has an account send them to the dashboard page
     if (req.user) {
-      res.redirect("/members");
+      res.redirect("/dashboard");
     }
-    res.sendFile(path.join(__dirname, "../public/login.html"));
+    res.render("login", {});
   });
-
-  // Here we've add our isAuthenticated middleware to this route.
-  // If a user who is not logged in tries to access this route they will be redirected to the signup page
-  app.get("/members", isAuthenticated, function(req, res) {
-    res.sendFile(path.join(__dirname, "../public/members.html"));
-  });
-
-  // ***************************************************************************************
-  // PSEUDO-CODE
-  // BACK-END HTML ROUTES
-  // ***************************************************************************************
-
-  // What's above is all from the starter code and we need to make some changes to it...
-
-  // Need to change the "get" for "/" above to show the homepage dashboard as right now it is directing to signup page;
-  // It should render index.handlebars
 
   // Need to create a new "get" for signup page to replace the one we just changed...
   app.get("/signup", function(req, res) {
     // Render signup.handlebars
+    if (req.user) {
+      res.redirect("/dashboard");
+    }
+    res.render("signup", {});
   });
 
-  // Need to change the "get" for "/login" above to render login.handlebars instead of login.html
+  // Need to show the homepage dashboard as right now it is directing to signup page;
+  // It should render index.handlebars
+  app.get("/", function(req, res) {
+    // If the user already has an account send them to the dashboard page
+    if (req.user) {
+      res.redirect("/dashboard");
+    }
+    //get list of 5 most-reviewed movies in our db
+    db.sequelize.query("SELECT title, IMDBid, AVG(score) as avgScore, posterURL FROM reviews GROUP BY IMDBid ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
+    .then( ([result, metadata]) => {
+      
+      const movies = result;
 
-  // Need to remove the "get" for "/members" above and replace it with...
+      //get the 10 most recent reviews for the movies returned above
+      let reviewQuery = "SELECT reviews.id, reviewText, score, title, IMDBid, username FROM reviews INNER JOIN users ON reviews.UserId = users.id WHERE ";
+      movies.forEach( movie => {
+        reviewQuery += `IMDBid = "${movie.IMDBid}" || `;
+      });
+      reviewQuery = reviewQuery.substring(0, reviewQuery.length - 3);  //remove the "||" after the final imdbId
+      reviewQuery += "ORDER BY reviews.createdAt DESC LIMIT 10";
+
+      db.sequelize.query(reviewQuery)
+      .then( ([result, metadata]) => { 
+        const reviews = result;
+        const data = {
+          movies: movies,
+          reviews: reviews
+        };
+        console.log(data);
+        
+        //call handlebars render with data
+        res.render("index", data);
+      });
+    });
+  });
+
+  //logged in users at route "/" will redirect here - should serve up index.handlebars, passing logged-in-appropriate data
   app.get("/dashboard", isAuthenticated, function(req, res) {
-    // Render user-dashboard.handlebars
+    // Render index.handlebars
   });
-  // (At this point we can delete the login.html, members.html, and signup.html files as they're no longer being used)
+
+  // Need to get html for a specific user's profile
+  app.get("/users/:username", function(req, res) {
+    // Render user.handlebars
+  });  
 
   // Need to get html for the specific movie that the user searched for
-  app.get("/movie/:imdbID", function(req, res) {
+  app.get("/movies/:imdbID", function(req, res) {
+    // Render movie.handlebars
+  });
+
+  app.get("/movies/:title", function(req, res) {
     // Render movie.handlebars
   });
 
   // Need to get html for the specific review that the user wants to share
-  app.get("/review/:id", function(req, res) {
+  app.get("/reviews/:id", function(req, res) {
     // Render review.handlebars
-  });
-
-  // Need to get html for a specific user's profile
-  app.get("/user/:username", function(req, res) {
-    // Render user.handlebars
   });
 
   // Need to get html for the form to create a review
@@ -70,3 +91,10 @@ module.exports = function(app) {
     // Render create.handlebars
   });
 };
+
+//***********STARTER CODE - REDIRECT EXAMPLE */
+// Here we've add our isAuthenticated middleware to this route.
+// If a user who is not logged in tries to access this route they will be redirected to the signup page
+// app.get("/members", isAuthenticated, function(req, res) {
+//   res.sendFile(path.join(__dirname, "../public/members.html"));
+// });
