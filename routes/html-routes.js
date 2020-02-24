@@ -46,14 +46,6 @@ module.exports = function(app) {
       const movies = result.map( movie => movie.dataValues);
 
       //get the 10 most recent reviews for the movies returned above
-      // let reviewQuery = "SELECT reviews.id, reviewText, score, title, IMDBid, username FROM reviews INNER JOIN users ON reviews.UserId = users.id WHERE ";
-      // movies.forEach( movie => {
-      //   reviewQuery += `IMDBid = "${movie.IMDBid}" || `;
-      // });
-      // reviewQuery = reviewQuery.substring(0, reviewQuery.length - 3);  //remove the "||" after the final imdbId
-      // reviewQuery += "ORDER BY reviews.createdAt DESC LIMIT 10";
-
-      // db.sequelize.query(reviewQuery)
       db.Review.findAll({
         include: [{
           model: db.User
