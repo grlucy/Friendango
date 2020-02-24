@@ -11,7 +11,6 @@ module.exports = function(sequelize, DataTypes) {
     });
     Follow.belongsTo(models.User, {
       foreignKey: {
-        name: "followee_id",
         allowNull: false,
         fieldName: "followedId"
       }
