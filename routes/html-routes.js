@@ -89,6 +89,7 @@ module.exports = function(app) {
 
   // Need to get html for a specific user's profile
   app.get("/users/:username", function(req, res) {
+    
     // Render user.handlebars
   });  
 
