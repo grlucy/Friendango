@@ -1,0 +1,191 @@
+<!-- Navigation Bar -->
+<nav class="navbar navbar-custom text-white">
+    <div class="container">
+        <div class="d-flex flex-wrap align-items-center">
+            <!-- Logo -->
+            <img class="logo" src="/images/friendango-logo-white-300px.png" />
+            <form class="form-inline my-2 my-lg-0">
+                <div class="input-group input-group-sm">
+                    <!-- Search Bar -->
+                    <input class="navbar-search form-control form-control-sm" type="search" placeholder="Search..."
+                        aria-label="Search" />
+                    <div class="input-group-append">
+                        <!-- Search Bar Dropdown Button -->
+                        <button type="button" class="btn btn-outline-light dropdown-toggle dropdown-toggle-split"
+                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="sr-only">Toggle Dropdown</span>
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">Movies</a>
+                            <a class="dropdown-item" href="#">Users</a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div id="username-display">
+            <!-- Log In Button -->
+            <button class="btn btn-outline-light btn-sm">
+                Log In
+            </button>
+            <!-- Sign Up Button -->
+            <button class="btn btn-outline-light btn-sm">
+                Sign Up
+            </button>
+        </div>
+    </div>
+</nav>
+<!-- Chart Section -->
+<section class="bg-grey">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 text-center topBotPad">
+                <h4 class="font-weight-light">
+                    Most Popular Movies
+                </h4>
+                <p class="font-weight-light font-italic">
+                    by average review score
+                </p>
+                <!-- Chart -->
+                <canvas id="indexChart" width="400" height="120"></canvas>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- Recent Reviews Section -->
+<section>
+    <div class="container">
+        <div class="row spacer"></div>
+        <!-- START OF LOOP THROUGH REVIEW DATA -->
+        {{#each reviews}}
+        <div class="row">
+            <div class="col-md-12 reviewBox">
+                <div class="d-flex align-items-start">
+                    <div class="bg-grey movie-score text-center">
+                        <h1>
+                            <!-- Insert review score below -->
+                            {{score}}
+                        </h1>
+                    </div>
+                    <div>
+                        <!-- Link to movie page -->
+                        <a href="./movies/{{IMDBid}}" class="movie-title">
+                            <h3 class="d-inline-block font-weight-bold">
+                                <!-- Insert movie title below -->
+                                {{title}}
+                            </h3>
+                        </a>
+                        <br />
+                        <!-- Link to user profile -->
+                        <a href="./users/{{username}}" class="user-link">
+                            <h4 class="d-inline-block font-weight-light">
+                                <!-- Insert reviewer's username below -->
+                                {{username}}
+                            </h4>
+                        </a>
+                    </div>
+                </div>
+                <div class="spacer"></div>
+                <p class="readmore-p">
+                    <!-- Insert review text below -->
+                    {{reviewText}}
+                </p>
+                <!-- Link to single review page -->
+                <a href="./reviews/{{id}}">
+                    <button class="btn btn-dark mt-3">Read More</button>
+                </a>
+            </div>
+        </div>
+        <div class="row spacer"></div>
+        <!-- END OF ONE LOOP OF REVIEW DATA -->
+        {{/each}}
+    </div>
+</section>
+
+<!-- Hidden HTML elements with Handlebars values -->
+
+<input type="hidden" id="movie1Title" value="{{movies.0.title}}">
+<input type="hidden" id="movie1Score" value="{{movies.0.avgScore}}">
+
+<input type="hidden" id="movie2Title" value="{{movies.1.title}}">
+<input type="hidden" id="movie2Score" value="{{movies.1.avgScore}}">
+
+<input type="hidden" id="movie3Title" value="{{movies.2.title}}">
+<input type="hidden" id="movie3Score" value="{{movies.2.avgScore}}">
+
+<input type="hidden" id="movie4Title" value="{{movies.3.title}}">
+<input type="hidden" id="movie4Score" value="{{movies.3.avgScore}}">
+
+<input type="hidden" id="movie5Title" value="{{movies.4.title}}">
+<input type="hidden" id="movie5Score" value="{{movies.4.avgScore}}">
+
+<!-- Script for Chart.JS -->
+<script type="text/javascript">
+
+    // Get handlebars data from hidden inputs above
+
+    let labelsArr = [];
+    for (let i = 1; i < 6; i++) {
+        labelsArr.push($(`#movie${i}Title`).val());
+    }
+
+    let scoresArr = [];
+    for (let i = 1; i < 6; i++) {
+        scoresArr.push($(`#movie${i}Score`).val());
+    }
+
+    // Create and style chart
+
+    const ctx = document.getElementById("indexChart").getContext("2d");
+    const indexChart = new Chart(ctx, {
+        type: "horizontalBar",
+        data: {
+            labels: labelsArr,
+            datasets: [
+                {
+                    label: "Average Score",
+                    data: scoresArr,
+                    backgroundColor: [
+                        "rgba(255, 99, 132, 0.6)",
+                        "rgba(54, 162, 235, 0.6)",
+                        "rgba(255, 206, 86, 0.6)",
+                        "rgba(91, 155, 105, 0.6)",
+                        "rgba(153, 102, 255, 0.6)"
+                    ],
+                    borderColor: [
+                        "rgba(255, 99, 132, 1)",
+                        "rgba(54, 162, 235, 1)",
+                        "rgba(255, 206, 86, 1)",
+                        "rgba(91, 155, 105, 1)",
+                        "rgba(153, 102, 255, 1)"
+                    ],
+                    borderWidth: 1
+                }
+            ]
+        },
+        options: {
+            legend: {
+                display: false
+            },
+            scales: {
+                xAxes: [
+                    {
+                        ticks: {
+                            beginAtZero: true,
+                            suggestedMax: 10
+                        }
+                    }
+                ],
+                yAxes: [
+                    {
+                        gridLines: {
+                            display: false
+                        }
+                    }
+                ]
+            }
+        }
+    });
+
+
+</script>
