@@ -151,13 +151,14 @@ module.exports = function(app) {
                 reviews: reviews
               };
               console.log(data);
+
+              //call handlebars render with data
+              res.render("user", data);
             });
           });
         });
       }
     });
-
-    // Render user.handlebars
   });  
 
   // Need to get html for the specific movie that the user searched for
