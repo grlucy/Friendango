@@ -1,4 +1,5 @@
 var db = require("../models");
+const Op = db.Sequelize.Op;
 
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
@@ -34,22 +35,41 @@ module.exports = function(app) {
       res.redirect("/dashboard");
     }
     //get list of 5 most-reviewed movies in our db
-    db.sequelize.query("SELECT title, IMDBid, AVG(score) as avgScore, posterURL FROM reviews GROUP BY IMDBid ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
-    .then( ([result, metadata]) => {
-      
-      const movies = result;
+    // db.sequelize.query("SELECT title, IMDBid, AVG(score) as avgScore, posterURL FROM reviews GROUP BY IMDBid ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
+    db.Review.findAll({
+      attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
+      group: ["IMDBid"],
+      order: [[db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"], [db.sequelize.col("avgScore"), "DESC"]],
+      limit: 5
+    })
+    .then( result => {
+      const movies = result.map( movie => movie.dataValues);
 
       //get the 10 most recent reviews for the movies returned above
-      let reviewQuery = "SELECT reviews.id, reviewText, score, title, IMDBid, username FROM reviews INNER JOIN users ON reviews.UserId = users.id WHERE ";
-      movies.forEach( movie => {
-        reviewQuery += `IMDBid = "${movie.IMDBid}" || `;
-      });
-      reviewQuery = reviewQuery.substring(0, reviewQuery.length - 3);  //remove the "||" after the final imdbId
-      reviewQuery += "ORDER BY reviews.createdAt DESC LIMIT 10";
-
-      db.sequelize.query(reviewQuery)
-      .then( ([result, metadata]) => { 
-        const reviews = result;
+      db.Review.findAll({
+        include: [{
+          model: db.User
+        }],
+        attributes: ["id", "reviewText", "score", "title", "IMDBid"],
+        where: {
+          IMDBid: {
+            [Op.or]: movies.map( movie => movie.IMDBid)
+          }
+        },
+        order: [["createdAt", "DESC"]],
+        limit: 10
+      })  
+      .then( result => { 
+        const reviews = result.map( review => {
+          return {
+            id: review.dataValues.id,
+            reviewText: review.dataValues.reviewText,
+            score: review.dataValues.score,
+            title: review.dataValues.title,
+            IMDBid: review.dataValues.IMDBid,
+            username: review.dataValues.User.dataValues.username
+          };
+        });
         const data = {
           movies: movies,
           reviews: reviews

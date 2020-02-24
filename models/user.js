@@ -25,13 +25,18 @@ module.exports = function(sequelize, DataTypes) {
   });
 
   User.associate = function(models) {
-    // Associating Author with Posts
-    // When an Author is deleted, also delete any associated Posts
+    // Associating User with Review and Follow
     User.hasMany(models.Follow, {
-      onDelete: "cascade"
+      onDelete: "cascade",
+      foreignKey: "userId"
+    });
+    User.hasMany(models.Follow, {
+      onDelete: "cascade",
+      foreignKey: "followedId"
     });
     User.hasMany(models.Review, {
-      onDelete: "cascade"
+      onDelete: "cascade",
+      foreignKey: "userId"
     });
   };
 
