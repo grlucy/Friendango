@@ -5,14 +5,15 @@ module.exports = function(sequelize, DataTypes) {
   Follow.associate = function(models) {
     Follow.belongsTo(models.User, {
       foreignKey: {
-        allowNull: false
+        allowNull: false,
+        fieldName: "userId"
       }
     });
     Follow.belongsTo(models.User, {
-      as:'followee',
       foreignKey: {
         name: "followee_id",
-        allowNull: false
+        allowNull: false,
+        fieldName: "followedId"
       }
     });
   };
