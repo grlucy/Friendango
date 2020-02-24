@@ -1,5 +1,7 @@
 var db = require("../models");
 const Op = db.Sequelize.Op;
+var passport = require("../config/passport");
+
 
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
@@ -44,7 +46,9 @@ module.exports = function(app) {
     })
     .then( result => {
       const movies = result.map( movie => movie.dataValues);
-
+      movies.sort( (a, b) => {
+        return b.avgScore - a.avgScore;
+      });
       //get the 10 most recent reviews for the movies returned above
       db.Review.findAll({
         include: [{
@@ -89,8 +93,72 @@ module.exports = function(app) {
 
   // Need to get html for a specific user's profile
   app.get("/users/:username", function(req, res) {
-    
-    // Render user.handlebars
+    db.User.findOne({
+      attributes: ["id", "username"],
+      where: {
+        username: req.params.username
+      }
+    })
+    .then( result => { 
+      if(result === null) {
+        res.status(404).redirect("/");
+      }
+      else {
+        const userId = result.dataValues.id;
+        const username = result.dataValues.username;
+        db.Follow.findAndCountAll({
+          where: {
+            userId: userId
+          }
+        })
+        .then( result => { 
+          const followingCount = result.count;
+
+          db.Review.findAndCountAll({
+            where: {
+              userId: userId
+            }
+          })
+          .then( result => { 
+            const reviewCount = result.count;
+
+            db.Review.findAll({
+              include: [{
+                model: db.User
+              }],
+              attributes: ["id", "reviewText", "score", "title", "IMDBid"],
+              where: {
+                userId: userId
+              },
+              order: [["createdAt", "DESC"]],
+              limit: 10
+            })  
+            .then( result => { 
+              const reviews = result.map( review => {
+                return {
+                  id: review.dataValues.id,
+                  reviewText: review.dataValues.reviewText,
+                  score: review.dataValues.score,
+                  title: review.dataValues.title,
+                  IMDBid: review.dataValues.IMDBid,
+                  username: review.dataValues.User.dataValues.username
+                };
+              });
+              const data = {
+                username: username,
+                followingCount: followingCount,
+                reviewCount: reviewCount,
+                reviews: reviews
+              };
+              console.log(data);
+
+              //call handlebars render with data
+              res.render("user", data);
+            });
+          });
+        });
+      }
+    });
   });  
 
   // Need to get html for the specific movie that the user searched for
