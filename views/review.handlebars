@@ -1,52 +1,54 @@
-  <body class="login-body">
-    {{> navbar/navbar-logged-in}}
-    <!-- Single Review Section -->
-    <section>
-      <div class="container">
-        <div class="row spacer"></div>
-        <div class="row">
-          <div class="col-md-12 reviewBox">
-            <!-- Share button will copy URL to clipboard -->
-            <button class="btn btn-dark mb-3 share-btn" id="shareButton">
-              Share
-            </button>
-            <div class="d-flex align-items-start">
-              <div class="bg-grey movie-score text-center">
-                <h1>
-                  <!-- Insert review score below -->
-                  {{score}}
-                </h1>
-              </div>
-              <div>
-                <!-- Link to movie page -->
-                <a href="#" class="movie-title">
-                  <h3 class="d-inline-block font-weight-bold">
-                    <!-- Insert movie title below -->
-                    {{title}}
-                  </h3>
-                </a>
-                <br />
-                <!-- Link to user profile -->
-                <a href="#" class="user-link">
-                  <h4 class="d-inline-block font-weight-light">
-                    <!-- Insert reviewer's username below -->
-                    {{username}}
-                  </h4>
-                </a>
-              </div>
+<body class="login-body">
+  {{> navbar/navbar-logged-in}}
+  <!-- Single Review Section -->
+  <section>
+    <div class="container">
+      <div class="row spacer"></div>
+      <div class="row">
+        <div class="col-md-12 reviewBox">
+          <!-- Share button will copy URL to clipboard -->
+          <button class="btn btn-dark mb-3 share-btn" id="shareButton">
+            Share
+          </button>
+          <p class="ml-3 text-muted d-inline" id="copyStatus">
+            <!-- When URL is copied to clipboard, success message will be dynamically created here -->
+          </p>
+          <div class="d-flex align-items-start">
+            <div class="bg-grey movie-score text-center">
+              <h1>
+                <!-- Insert review score below -->
+                {{score}}
+              </h1>
             </div>
-            <div class="spacer"></div>
-            <p>
-              <!-- Insert review text below -->
-              {{reviewText}}
-            </p>
+            <div>
+              <!-- Link to movie page -->
+              <a href="/movies/{{IMDBid}}" class="movie-title">
+                <h3 class="d-inline-block font-weight-bold">
+                  <!-- Insert movie title below -->
+                  {{title}}
+                </h3>
+              </a>
+              <br />
+              <!-- Link to user profile -->
+              <a href="/users/{{username}}" class="user-link">
+                <h4 class="d-inline-block font-weight-light">
+                  <!-- Insert reviewer's username below -->
+                  {{username}}
+                </h4>
+              </a>
+            </div>
           </div>
+          <div class="spacer"></div>
+          <p>
+            <!-- Insert review text below -->
+            {{reviewText}}
+          </p>
         </div>
-        <div class="row spacer"></div>
       </div>
-    </section>
-    <!-- Share button - script for copy to clipboard -->
-    <script
-      type="text/javascript"
-      src="/js/copy-to-clipboard.js"
-    ></script>
+      <div class="row spacer"></div>
+    </div>
+  </section>
+  <!-- Share button - script for copy to clipboard -->
+  <script type="text/javascript" src="/js/copy-to-clipboard.js"></script>
+  <script type="text/javascript" src="/js/members.js"></script>
+</body>

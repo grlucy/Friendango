@@ -99,7 +99,12 @@ module.exports = function(app) {
       const usersFollowed = result.map(user => user.dataValues.followedId);
 
       db.Review.findAll({
-        attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
+        attributes: [
+          "title",
+          "IMDBid",
+          ["AVG(score)", "avgScore"],
+          "posterURL"
+        ],
         where: {
           userId: {
             [Op.or]: usersFollowed
@@ -116,7 +121,7 @@ module.exports = function(app) {
         movies.sort((a, b) => {
           return b.avgScore - a.avgScore;
         });
-  
+
         db.Review.findAll({
           include: [
             {
@@ -130,7 +135,7 @@ module.exports = function(app) {
             },
             userId: {
               [Op.or]: usersFollowed
-            }  
+            }
           },
           order: [["createdAt", "DESC"]],
           limit: 10
@@ -150,11 +155,11 @@ module.exports = function(app) {
             reviews: reviews
           };
           console.log(data);
-  
+
           //call handlebars render with data
           res.render("user-dashboard", data);
         });
-      });  
+      });
     });
   });
 
@@ -234,8 +239,9 @@ module.exports = function(app) {
       .get(`http://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.apikey}`)
       .then(function(response) {
         const movie = {
+          imdbId: imdbId,
           title: response.data.Title,
-          year: response.data.Year,
+          releaseDate: response.data.Released,
           rating: response.data.Rated,
           plot: response.data.Plot,
           posterURL: response.data.Poster
@@ -249,7 +255,7 @@ module.exports = function(app) {
           }
         }).then(result => {
           const usersFollowed = result.map(user => user.dataValues.followedId);
-        
+
           //get friendango average score for movie from followed users
           db.Review.findAll({
             attributes: [["AVG(score)", "avgScore"]],
