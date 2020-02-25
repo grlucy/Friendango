@@ -326,8 +326,22 @@ module.exports = function(app) {
   });
 
   // Need to get html for the form to create a review
-  app.get("/create", function(req, res) {
-    // Render create.handlebars
+  app.get("/create/:id", function(req, res) {
+    const IMDBid = req.params.id.trim();
+
+    //get movie data from OMDB
+    axios
+      .get(`http://www.omdbapi.com/?i=${IMDBid}&apikey=${process.env.apikey}`)
+      .then(function(response) {
+        const movie = {
+          IMDBid: IMDBid,
+          title: response.data.Title,
+          posterURL: response.data.Poster
+        };
+
+        // Render create.handlebars
+        res.render("create", movie);
+      });
   });
 };
 
