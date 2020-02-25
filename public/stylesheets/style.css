@@ -40,7 +40,7 @@ nav button {
 
 /* Main Content Styles */
 .login-body {
-  background-image: url("../../public/images/stripes-light.png");
+  background-image: url("/images/stripes-light.png");
 }
 .topBotPad {
   padding-top: 20px;

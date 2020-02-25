@@ -1,0 +1,36 @@
+<body>
+ <!-- Navigation Bar -->
+ {{> navbar/navbar-logged-in}}
+ <!-- User Info Section -->
+ <section class="bg-grey">
+  <div class="container">
+   <div class="row">
+    <div class="col-md-12 text-center topBotPad">
+     <h1 class="member-name">
+      <!-- Insert username below -->
+      {{username}}
+     </h1>
+     <p>
+      <!-- Insert review count below -->
+      {{reviewCount}} REVIEWS POSTED
+      <br />
+      <!-- Insert following count below -->
+      FOLLOWING {{followingCount}} USERS
+     </p>
+     <button class="btn btn-dark">Follow</button>
+    </div>
+   </div>
+  </div>
+ </section>
+ <!-- User's Reviews Section -->
+ <section>
+  <div class="container">
+   <div class="row spacer"></div>
+   <!-- START OF LOOP THROUGH REVIEW DATA -->
+   {{#each reviews}}
+   {{> reviews/review-block}}
+   {{/each}}
+   <!-- END OF LOOP THROUGH REVIEW DATA -->
+  </div>
+ </section>
+</body>

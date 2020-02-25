@@ -1,0 +1,39 @@
+<div class="row">
+ <div class="col-md-12 reviewBox">
+  <div class="d-flex align-items-start">
+   <div class="bg-grey movie-score text-center">
+    <h1>
+     <!-- Insert review score below -->
+     {{score}}
+    </h1>
+   </div>
+   <div>
+    <!-- Link to movie page -->
+    <a href="./movies/{{IMDBid}}" class="movie-title">
+     <h3 class="d-inline-block font-weight-bold">
+      <!-- Insert movie title below -->
+      {{title}}
+     </h3>
+    </a>
+    <br />
+    <!-- Link to user profile -->
+    <a href="./users/{{username}}" class="user-link">
+     <h4 class="d-inline-block font-weight-light">
+      <!-- Insert reviewer's username below -->
+      {{username}}
+     </h4>
+    </a>
+   </div>
+  </div>
+  <div class="spacer"></div>
+  <p class="readmore-p">
+   <!-- Insert review text below -->
+   {{reviewText}}
+  </p>
+  <!-- Link to single review page -->
+  <a href="./reviews/{{id}}">
+   <button class="btn btn-dark mt-3">Read More</button>
+  </a>
+ </div>
+</div>
+<div class="row spacer"></div>
