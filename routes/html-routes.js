@@ -166,14 +166,14 @@ module.exports = function(app) {
 
     //get movie data from OMDB
     axios
-      .get(`http://www.omdbapi.com/?i=${imdbId}&apikey=trilogy`)
-      .then(function(res) {
+      .get(`http://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.apikey}`)
+      .then(function(response) {
         const movie = {
-          title: res.data.Title,
-          year: res.data.Year,
-          rating: res.data.Rated,
-          plot: res.data.Plot,
-          posterURL: res.data.Poster
+          title: response.data.Title,
+          year: response.data.Year,
+          rating: response.data.Rated,
+          plot: response.data.Plot,
+          posterURL: response.data.Poster
         };
 
         //get list of users that user follows
@@ -226,6 +226,7 @@ module.exports = function(app) {
                 };
               });
               movie.reviews = reviews;
+              console.log(movie);
               res.render("movie", movie);
             });
           });
