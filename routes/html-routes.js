@@ -89,7 +89,72 @@ module.exports = function(app) {
 
   //logged in users at route "/" will redirect here - should serve up index.handlebars, passing logged-in-appropriate data
   app.get("/dashboard", isAuthenticated, function(req, res) {
-    // Render index.handlebars
+    db.Follow.findAll({
+      attributes: ["followedId"],
+      where: {
+        userId: req.user.id
+      }
+    }).then(result => {
+      const usersFollowed = result.map(user => user.dataValues.followedId);
+
+      db.Review.findAll({
+        attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
+        where: {
+          userId: {
+            [Op.or]: usersFollowed
+          }
+        },
+        group: ["IMDBid"],
+        order: [
+          [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
+          [db.sequelize.col("avgScore"), "DESC"]
+        ],
+        limit: 5
+      }).then(result => {
+        const movies = result.map(movie => movie.dataValues);
+        movies.sort((a, b) => {
+          return b.avgScore - a.avgScore;
+        });
+  
+        db.Review.findAll({
+          include: [
+            {
+              model: db.User
+            }
+          ],
+          attributes: ["id", "reviewText", "score", "title", "IMDBid"],
+          where: {
+            IMDBid: {
+              [Op.or]: movies.map(movie => movie.IMDBid)
+            },
+            userId: {
+              [Op.or]: usersFollowed
+            }  
+          },
+          order: [["createdAt", "DESC"]],
+          limit: 10
+        }).then(result => {
+          const reviews = result.map(review => {
+            return {
+              id: review.dataValues.id,
+              reviewText: review.dataValues.reviewText,
+              score: review.dataValues.score,
+              title: review.dataValues.title,
+              IMDBid: review.dataValues.IMDBid,
+              username: review.dataValues.User.dataValues.username
+            };
+          });
+          const data = {
+            movies: movies,
+            reviews: reviews
+          };
+          console.log(data);
+  
+          //call handlebars render with data
+          res.render("user-dashboard", data);
+        });
+      });  
+    });
   });
 
   // Need to get html for a specific user's profile
