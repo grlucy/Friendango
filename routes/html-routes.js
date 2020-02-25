@@ -90,6 +90,7 @@ module.exports = function(app) {
   //logged in users at route "/" will redirect here - should serve up index.handlebars, passing logged-in-appropriate data
   app.get("/dashboard", isAuthenticated, function(req, res) {
     // Render index.handlebars
+    
   });
 
   // Need to get html for a specific user's profile

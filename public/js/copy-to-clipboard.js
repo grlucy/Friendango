@@ -1,6 +1,7 @@
 // Takes current URL, converts it into a temporary text input element, selects it, copies it to clipboard and then deletes the input element
 function copyURL() {
   const copyText = window.location.href;
+  console.log(copyText);
   const dummyInput = document.createElement("input");
   dummyInput.type = "text";
   dummyInput.value = copyText;
