@@ -49,30 +49,4 @@ module.exports = function(app) {
     }
   });
 
-  // ***************************************************************************************
-  // PSEUDO-CODE
-  // BACK-END API ROUTES
-  // ***************************************************************************************
-
-  // Note: Activity 14-12 has some similar routes that might be helpful to look at
-
-  // "Get" route for getting all review scores for movies with release date in the past 3 months
-
-  // "Get" route for getting 10 most recent reviews and the username associated with them
-
-  // "Get" route for getting logged-in user's username (for the welcome message)
-
-  // "Get" route for getting all review scores for movies with release date in the past 3 months WRITTEN BY USERS THAT THIS USER FOLLOWS
-
-  // "Get" route for getting 10 most recent reviews WRITTEN BY USERS THAT THIS USER FOLLOWS and the username associated with them
-
-  // "Get" route for getting all reviews for a specific movie (using the imdbID) and the username associated with them
-
-  // "Get" route for getting a specific review (using the review id) and the username associated with it
-
-  // "Get" route for getting all reviews for a specific user and the username associated with them (by joining)
-
-  // "Post" route for creating a review
-
-  // "Post" route for creating a follow relationship between follower and followee
 };

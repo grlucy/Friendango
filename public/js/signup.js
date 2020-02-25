@@ -19,6 +19,7 @@ $(document).ready(function() {
     }
     // If we have an email and password, run the signUpUser function
     signUpUser(userData.email, userData.username, userData.password);
+    usernameInput.val("");
     emailInput.val("");
     passwordInput.val("");
   });
@@ -32,7 +33,7 @@ $(document).ready(function() {
       password: password
     })
       .then(function(data) {
-        window.location.replace("/members");
+        window.location.replace("/dashboard");
         // If there's an error, handle it by throwing up a bootstrap alert
       })
       .catch(handleLoginErr);
