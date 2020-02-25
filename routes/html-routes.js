@@ -170,23 +170,30 @@ module.exports = function(app) {
 
   // Need to get html for the specific review that the user wants to share
   app.get("/reviews/:id", function(req, res) {
-    console.log(req.params.id);
-    
     db.Review.findOne({
       where: {
         id: req.params.id
-      }
+      },
+      include: [db.User]
     }).then(result => {
       if (result === null) {
         res.status(404).redirect("/");
       } else {
-        console.log(result.dataValues);
-
+        console.log(result);
+        let review = {
+          id: result.dataValues.id,
+          reviewText: result.dataValues.reviewText,
+          score: result.dataValues.score,
+          title: result.dataValues.title,
+          IMDBid: result.dataValues.IMDBid,
+          username: result.dataValues.User.dataValues.username
+        };
         // Render review.handlebars
         res.render("review", review);
       }
     });
   });
+
   // Need to get html for the form to create a review
   app.get("/create", function(req, res) {
     // Render create.handlebars
