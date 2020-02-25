@@ -8,6 +8,8 @@ function copyURL() {
   dummyInput.select();
   document.execCommand("copy");
   document.body.removeChild(dummyInput);
+
+  $("#copyStatus").text("URL copied to clipboard!");
 }
 
 // Add event for user clicking "Share" button
