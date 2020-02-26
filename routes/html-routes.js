@@ -165,7 +165,7 @@ module.exports = function(app) {
   });
 
   // Need to get html for a specific user's profile
-  app.get("/users/:username", function(req, res) {
+  app.get("/users/:username", isAuthenticated, function(req, res) {
     db.User.findOne({
       attributes: ["id", "username"],
       where: {
@@ -232,7 +232,7 @@ module.exports = function(app) {
   });
 
   // Need to get html for the specific movie that the user searched for
-  app.get("/movies/:imdbId", function(req, res) {
+  app.get("/movies/:imdbId", isAuthenticated, function(req, res) {
     const imdbId = req.params.imdbId.trim();
 
     //get movie data from OMDB
@@ -328,7 +328,7 @@ module.exports = function(app) {
   });
 
   // Need to get html for the specific review that the user wants to share
-  app.get("/reviews/:id", function(req, res) {
+  app.get("/reviews/:id", isAuthenticated, function(req, res) {
     db.Review.findOne({
       where: {
         id: req.params.id
@@ -354,7 +354,7 @@ module.exports = function(app) {
   });
 
   // Need to get html for the form to create a review
-  app.get("/create/:id", function(req, res) {
+  app.get("/create/:id", isAuthenticated, function(req, res) {
     const IMDBid = req.params.id.trim();
 
     //get movie data from OMDB
@@ -372,10 +372,3 @@ module.exports = function(app) {
       });
   });
 };
-
-//***********STARTER CODE - REDIRECT EXAMPLE */
-// Here we've add our isAuthenticated middleware to this route.
-// If a user who is not logged in tries to access this route they will be redirected to the signup page
-// app.get("/members", isAuthenticated, function(req, res) {
-//   res.sendFile(path.join(__dirname, "../public/members.html"));
-// });
