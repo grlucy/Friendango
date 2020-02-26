@@ -2,6 +2,7 @@ var db = require("../models");
 const Op = db.Sequelize.Op;
 var passport = require("../config/passport");
 const axios = require("axios");
+const dex = require("../controllers/index-controller");
 
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
@@ -36,59 +37,37 @@ module.exports = function(app) {
       res.redirect("/dashboard");
     } else {
       //get list of 5 most-reviewed movies in our db
-      db.Review.findAll({
-        attributes: [
-          "title",
-          "IMDBid",
-          ["AVG(score)", "avgScore"],
-          "posterURL"
-        ],
-        group: ["IMDBid"],
-        order: [
-          [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
-          [db.sequelize.col("avgScore"), "DESC"]
-        ],
-        limit: 5
-      }).then(result => {
-        const movies = result.map(movie => movie.dataValues);
-        movies.sort((a, b) => {
-          return b.avgScore - a.avgScore;
-        });
-        //get the 10 most recent reviews for the movies returned above
-        db.Review.findAll({
-          include: [
-            {
-              model: db.User
-            }
-          ],
-          attributes: ["id", "reviewText", "score", "title", "IMDBid"],
-          where: {
-            IMDBid: {
-              [Op.or]: movies.map(movie => movie.IMDBid)
-            }
-          },
-          order: [["createdAt", "DESC"]],
-          limit: 10
-        }).then(result => {
-          const reviews = result.map(review => {
-            return {
-              id: review.dataValues.id,
-              reviewText: review.dataValues.reviewText,
-              score: review.dataValues.score,
-              title: review.dataValues.title,
-              IMDBid: review.dataValues.IMDBid,
-              username: review.dataValues.User.dataValues.username
-            };
-          });
+      dex.getTopMovies()
+      .then(result => {
+        if(result === null) {  //no reviews in the db
           const data = {
-            movies: movies,
-            reviews: reviews
+            movies: [],
+            reviews: []
           };
           console.log(data);
 
           //call handlebars render with data
           res.render("index", data);
-        });
+        }
+        else {
+          const movies = result;
+          movies.sort((a, b) => {
+            return b.avgScore - a.avgScore;
+          });
+          //get the 10 most recent reviews for the movies returned above
+          dex.getRecentReviews(movies)
+          .then(result => {
+            const reviews = result;
+            const data = {
+              movies: movies,
+              reviews: reviews
+            };
+            console.log(data);
+  
+            //call handlebars render with data
+            res.render("index", data);
+          });
+        }
       });
     }
   });
