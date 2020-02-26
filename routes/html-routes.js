@@ -35,11 +35,15 @@ module.exports = function(app) {
     // If the user already has an account send them to the dashboard page
     if (req.user) {
       res.redirect("/dashboard");
-    }
-    else{
+    } else {
       //get list of 5 most-reviewed movies in our db
       db.Review.findAll({
-        attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
+        attributes: [
+          "title",
+          "IMDBid",
+          ["AVG(score)", "avgScore"],
+          "posterURL"
+        ],
         group: ["IMDBid"],
         order: [
           [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
@@ -82,11 +86,11 @@ module.exports = function(app) {
             reviews: reviews
           };
           console.log(data);
-  
+
           //call handlebars render with data
           res.render("index", data);
         });
-      });  
+      });
     }
   });
 
