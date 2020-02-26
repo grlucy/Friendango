@@ -2,6 +2,7 @@ var db = require("../models");
 const Op = db.Sequelize.Op;
 var passport = require("../config/passport");
 const axios = require("axios");
+const mv = require("../controllers/movie-controller");
 
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
@@ -234,7 +235,6 @@ module.exports = function(app) {
   // Need to get html for the specific movie that the user searched for
   app.get("/movies/:imdbId", isAuthenticated, function(req, res) {
     const imdbId = req.params.imdbId.trim();
-
     //get movie data from OMDB
     axios
       .get(`http://www.omdbapi.com/?i=${imdbId}&apikey=${process.env.apikey}`)
@@ -248,81 +248,78 @@ module.exports = function(app) {
           posterURL: response.data.Poster
         };
 
-        //get list of users that user follows
-        db.Follow.findAll({
-          attributes: ["followedId"],
-          where: {
-            userId: req.user.id
-          }
-        }).then(result => {
-          const usersFollowed = result.map(user => user.dataValues.followedId);
-
-          //get friendango average score for movie from followed users
-          db.Review.findAll({
-            attributes: [["AVG(score)", "avgScore"]],
-            where: {
-              IMDBid: imdbId,
-              userId: {
-                [Op.or]: usersFollowed
-              }
-            },
-            group: ["IMDBid"]
-          }).then(result => {
-            movie.avgScore = result[0].dataValues.avgScore;
-
-            //find 10 most recent reviews for the movie from followed users
-            db.Review.findAll({
-              include: [
-                {
-                  model: db.User
-                }
-              ],
-              attributes: ["id", "reviewText", "score", "title", "IMDBid"],
-              where: {
-                IMDBid: imdbId,
-                userId: {
-                  [Op.or]: usersFollowed
-                }
-              },
-              order: [["createdAt", "DESC"]],
-              limit: 10
-            }).then(result => {
-              const reviews = result.map(review => {
-                return {
-                  id: review.dataValues.id,
-                  reviewText: review.dataValues.reviewText,
-                  score: review.dataValues.score,
-                  title: review.dataValues.title,
-                  IMDBid: review.dataValues.IMDBid,
-                  username: review.dataValues.User.dataValues.username
-                };
-              });
-              movie.reviews = reviews;
-
-              //get review scores for ALL reviews from followed users
-              db.Review.findAll({
-                attributes: ["score", [db.sequelize.fn("COUNT", "score"), "count"]],
-                where: {
-                  IMDBid: imdbId,
-                  userId: {
-                    [Op.or]: usersFollowed
-                  }
-                },
-                group: "score",
-                order: [["score", "DESC"]]
-              }).then(result => {
-                const scoreCounts = result.map( score => {
-                  return {
-                    score: score.dataValues.score,
-                    count: score.dataValues.count
-                  }
-                });
-                movie.scoreCounts = scoreCounts;
+        mv.getUsersFollowed(req.user.id)
+        .then(result => {
+          if(result === null) {  //not following anybody
+            mv.getAverageScore(movie.imdbId, [])
+            .then( result => {
+              if(result === null) {  //no reviews for movie
+                movie.avgScore = null;
+                movie.reviews = [];
+                movie.scoreCounts = [];
                 console.log(movie);
                 res.render("movie", movie);
-              });
+              }
+              else {
+                movie.avgScore = result;
+                mv.getReviews(movie.imdbId, [])
+                .then( result => {
+                  movie.reviews = result;
+                  mv.getScores(movie.imdbId, [])
+                  .then( result => {
+                    movie.scoreCounts = result;
+                    console.log(movie);
+                    res.render("movie", movie);
+                  });
+                });
+              }
             });
-          });
+          }
+          else {  //there are followed users
+            const usersFollowed = result;
+            mv.getAverageScore(movie.imdbId, usersFollowed)
+            .then( result => {
+              if(result === null) {  //movie has no reviews from followed users
+                //get data for all users 
+                mv.getAverageScore(movie.imdbId, [])
+                .then( result => {
+                  if(result === null) {  //no reviews for movie
+                    movie.avgScore = null;
+                    movie.reviews = [];
+                    movie.scoreCounts = [];
+                    console.log(movie);
+                    res.render("movie", movie);
+                  }
+                  else {
+                    movie.avgScore = result;
+                    mv.getReviews(movie.imdbId, [])
+                    .then( result => {
+                      movie.reviews = result;
+                      mv.getScores(movie.imdbId, [])
+                      .then( result => {
+                        movie.scoreCounts = result;
+                        console.log(movie);
+                        res.render("movie", movie);
+                      });
+                    });
+                  }
+                });    
+              }
+              else {  //there are reviews from followed users
+                movie.avgScore = result;
+                mv.getReviews(movie.imdbId, usersFollowed)
+                .then( result => {
+                  movie.reviews = result;
+                  mv.getScores(movie.imdbId, usersFollowed)
+                  .then( result => {
+                    movie.scoreCounts = result;
+                    console.log(movie);
+                    res.render("movie", movie);
+                  });
+                });
+              }
+            });
+          }
         });
       });
   });
