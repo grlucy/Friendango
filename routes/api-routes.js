@@ -51,20 +51,29 @@ module.exports = function(app) {
 
   // "Post" route for creating a review
   app.post("/api/review", function(req, res) {
-    db.Review.create({
-      IMDBid: req.body.IMDBid,
-      title: req.body.title,
-      posterURL: req.body.posterURL,
-      reviewText: req.body.reviewText,
-      score: req.body.score,
-      userId: req.body.userId
-    })
-      .then(function() {
-        res.status(200);
+    db.User.findOne({
+      attributes: ["id", "username"],
+      where: {
+        username: req.body.username
+      }
+    }).then(result => {
+      const userId = result.dataValues.id;
+
+      db.Review.create({
+        IMDBid: req.body.IMDBid,
+        title: req.body.title,
+        posterURL: req.body.posterURL,
+        reviewText: req.body.reviewText,
+        score: req.body.score,
+        userId: userId
       })
-      .catch(function(err) {
-        res.status(401).json(err);
-      });
+        .then(function() {
+          res.status(200).end();
+        })
+        .catch(function(err) {
+          res.status(401).json(err);
+        });
+    });
   });
 
   // "Post" route for creating a follow relationship between follower and followee

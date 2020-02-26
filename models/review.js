@@ -4,14 +4,14 @@ module.exports = function(sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [55]
+        len: [1, 55]
       }
     },
     title: {
       type: DataTypes.STRING,
       allowNull: false,
       validate: {
-        len: [255]
+        len: [1, 255]
       }
     },
     posterURL: {
@@ -21,12 +21,12 @@ module.exports = function(sequelize, DataTypes) {
     reviewText: {
       type: DataTypes.TEXT,
       allowNull: false,
-      len: [1000]
+      len: [1, 1000]
     },
     score: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      len: [2]
+      len: [1, 2]
     }
   });
 

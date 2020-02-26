@@ -11,7 +11,7 @@ $(document).ready(function() {
       .val()
       .trim();
     const score = parseInt($("#score-select").val());
-    const userId = $("#userId").text();
+    const username = $("#username").text();
 
     const reviewData = {
       IMDBid: IMDBid,
@@ -19,12 +19,14 @@ $(document).ready(function() {
       posterURL: posterURL,
       reviewText: reviewText,
       score: score,
-      userId: userId
+      username: username
     };
 
     if (!reviewData.reviewText) {
       return;
     }
+
+    console.log(reviewData);
 
     createReview(
       reviewData.IMDBid,
@@ -32,19 +34,19 @@ $(document).ready(function() {
       reviewData.posterURL,
       reviewData.reviewText,
       reviewData.score,
-      reviewData.userId
+      reviewData.username
     );
     $("#review-text").val("");
   });
 
-  function createReview(IMDBid, title, posterURL, reviewText, score, userId) {
+  function createReview(IMDBid, title, posterURL, reviewText, score, username) {
     $.post("/api/review", {
       IMDBid: IMDBid,
       title: title,
       posterURL: posterURL,
       reviewText: reviewText,
       score: score,
-      userId: userId
+      username: username
     })
       .then(function(data) {
         window.location.replace("/dashboard");
