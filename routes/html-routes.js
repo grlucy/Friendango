@@ -36,7 +36,6 @@ module.exports = function(app) {
       res.redirect("/dashboard");
     }
     //get list of 5 most-reviewed movies in our db
-    // db.sequelize.query("SELECT title, IMDBid, AVG(score) as avgScore, posterURL FROM reviews GROUP BY IMDBid ORDER BY count(*) DESC, AVG(score) DESC LIMIT 5")
     db.Review.findAll({
       attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
       group: ["IMDBid"],
@@ -297,8 +296,29 @@ module.exports = function(app) {
                 };
               });
               movie.reviews = reviews;
-              console.log(movie);
-              res.render("movie", movie);
+
+              //get review scores for ALL reviews from followed users
+              db.Review.findAll({
+                attributes: ["score", [db.sequelize.fn("COUNT", "score"), "count"]],
+                where: {
+                  IMDBid: imdbId,
+                  userId: {
+                    [Op.or]: usersFollowed
+                  }
+                },
+                group: "score",
+                order: [["score", "DESC"]]
+              }).then(result => {
+                const scoreCounts = result.map( score => {
+                  return {
+                    score: score.dataValues.score,
+                    count: score.dataValues.count
+                  }
+                });
+                movie.scoreCounts = scoreCounts;
+                console.log(movie);
+                res.render("movie", movie);
+              });
             });
           });
         });
