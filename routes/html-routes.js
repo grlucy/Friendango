@@ -34,11 +34,15 @@ module.exports = function(app) {
     // If the user already has an account send them to the dashboard page
     if (req.user) {
       res.redirect("/dashboard");
-    }
-    else{
+    } else {
       //get list of 5 most-reviewed movies in our db
       db.Review.findAll({
-        attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
+        attributes: [
+          "title",
+          "IMDBid",
+          ["AVG(score)", "avgScore"],
+          "posterURL"
+        ],
         group: ["IMDBid"],
         order: [
           [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
@@ -81,11 +85,11 @@ module.exports = function(app) {
             reviews: reviews
           };
           console.log(data);
-  
+
           //call handlebars render with data
           res.render("index", data);
         });
-      });  
+      });
     }
   });
 
@@ -301,7 +305,10 @@ module.exports = function(app) {
 
               //get review scores for ALL reviews from followed users
               db.Review.findAll({
-                attributes: ["score", [db.sequelize.fn("COUNT", "score"), "count"]],
+                attributes: [
+                  "score",
+                  [db.sequelize.fn("COUNT", "score"), "count"]
+                ],
                 where: {
                   IMDBid: imdbId,
                   userId: {
@@ -311,11 +318,11 @@ module.exports = function(app) {
                 group: "score",
                 order: [["score", "DESC"]]
               }).then(result => {
-                const scoreCounts = result.map( score => {
+                const scoreCounts = result.map(score => {
                   return {
                     score: score.dataValues.score,
                     count: score.dataValues.count
-                  }
+                  };
                 });
                 movie.scoreCounts = scoreCounts;
                 console.log(movie);

@@ -12,7 +12,7 @@
                         <!-- Insert movie title below -->
                         {{title}}
                     </h4>
-                    <form class="mt-3">
+                    <form class="mt-3" id="createForm">
                         <div class="form-group">
                             <label for="score-select">Score</label>
                             <!-- Score select -->
@@ -34,7 +34,7 @@
                             <!-- Review text -->
                             <textarea class="form-control" id="review-text" rows="3"></textarea>
                         </div>
-                        <!-- Login button -->
+                        <!-- submit button -->
                         <button type="submit" class="btn btn-dark">Submit</button>
                     </form>
                 </div>
@@ -45,4 +45,10 @@
     <!-- Hidden inputs with movie info to submit to database -->
     <input type="hidden" id="IMDBid" value="{{IMDBid}}">
     <input type="hidden" id="posterURL" value="{{posterURL}}">
+    <input type="hidden" id="title" value="{{title}}">
+    <p class="member-name" style="display:none;" id="username"></p>
+    <!-- Script to get username -->
+    <script type="text/javascript" src="/js/members.js"></script>
+    <!--Script to submit form-->
+    <script type="text/javascript" src="/js/review.js"></script>
 </body>
