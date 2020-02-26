@@ -17,7 +17,9 @@
       <!-- Insert following count below -->
       FOLLOWING {{followingCount}} USERS
      </p>
-     <button class="btn btn-dark">Follow</button>
+     <div id="followStatus">
+      <button class="btn btn-dark" id="createFollow">Follow</button>
+     </div>
     </div>
    </div>
   </div>
@@ -33,5 +35,10 @@
    <!-- END OF LOOP THROUGH REVIEW DATA -->
   </div>
  </section>
+ <!--Hidden inputs with values for Post route-->
+ <input type="hidden" id="profileUserId" value="{{profileUserId}}">
+ <input type="hidden" id="loginUserId" value="{{loginUserId}}">
+
  <script type="text/javascript" src="/js/members.js"></script>
+ <script type="text/javascript" src="/js/user.js"></script>
 </body>
