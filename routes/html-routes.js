@@ -35,56 +35,58 @@ module.exports = function(app) {
     if (req.user) {
       res.redirect("/dashboard");
     }
-    //get list of 5 most-reviewed movies in our db
-    db.Review.findAll({
-      attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
-      group: ["IMDBid"],
-      order: [
-        [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
-        [db.sequelize.col("avgScore"), "DESC"]
-      ],
-      limit: 5
-    }).then(result => {
-      const movies = result.map(movie => movie.dataValues);
-      movies.sort((a, b) => {
-        return b.avgScore - a.avgScore;
-      });
-      //get the 10 most recent reviews for the movies returned above
+    else{
+      //get list of 5 most-reviewed movies in our db
       db.Review.findAll({
-        include: [
-          {
-            model: db.User
-          }
+        attributes: ["title", "IMDBid", ["AVG(score)", "avgScore"], "posterURL"],
+        group: ["IMDBid"],
+        order: [
+          [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
+          [db.sequelize.col("avgScore"), "DESC"]
         ],
-        attributes: ["id", "reviewText", "score", "title", "IMDBid"],
-        where: {
-          IMDBid: {
-            [Op.or]: movies.map(movie => movie.IMDBid)
-          }
-        },
-        order: [["createdAt", "DESC"]],
-        limit: 10
+        limit: 5
       }).then(result => {
-        const reviews = result.map(review => {
-          return {
-            id: review.dataValues.id,
-            reviewText: review.dataValues.reviewText,
-            score: review.dataValues.score,
-            title: review.dataValues.title,
-            IMDBid: review.dataValues.IMDBid,
-            username: review.dataValues.User.dataValues.username
-          };
+        const movies = result.map(movie => movie.dataValues);
+        movies.sort((a, b) => {
+          return b.avgScore - a.avgScore;
         });
-        const data = {
-          movies: movies,
-          reviews: reviews
-        };
-        console.log(data);
-
-        //call handlebars render with data
-        res.render("index", data);
-      });
-    });
+        //get the 10 most recent reviews for the movies returned above
+        db.Review.findAll({
+          include: [
+            {
+              model: db.User
+            }
+          ],
+          attributes: ["id", "reviewText", "score", "title", "IMDBid"],
+          where: {
+            IMDBid: {
+              [Op.or]: movies.map(movie => movie.IMDBid)
+            }
+          },
+          order: [["createdAt", "DESC"]],
+          limit: 10
+        }).then(result => {
+          const reviews = result.map(review => {
+            return {
+              id: review.dataValues.id,
+              reviewText: review.dataValues.reviewText,
+              score: review.dataValues.score,
+              title: review.dataValues.title,
+              IMDBid: review.dataValues.IMDBid,
+              username: review.dataValues.User.dataValues.username
+            };
+          });
+          const data = {
+            movies: movies,
+            reviews: reviews
+          };
+          console.log(data);
+  
+          //call handlebars render with data
+          res.render("index", data);
+        });
+      });  
+    }
   });
 
   //logged in users at route "/" will redirect here - should serve up index.handlebars, passing logged-in-appropriate data
