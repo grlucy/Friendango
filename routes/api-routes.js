@@ -22,8 +22,14 @@ module.exports = function(app) {
       password: req.body.password,
       username: req.body.username
     })
-      .then(function() {
-        res.redirect(307, "/api/login");
+      .then(function(newUser) {
+        db.Follow.create({  //add user to their follow list
+          userId: newUser.dataValues.id,
+          followedId: newUser.dataValues.id
+        })
+        .then(function() {
+          res.redirect(307, "/api/login");
+        })
       })
       .catch(function(err) {
         res.status(401).json(err);
