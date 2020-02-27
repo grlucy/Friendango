@@ -196,39 +196,61 @@ module.exports = function(app) {
           }).then(result => {
             const reviewCount = result.count;
 
-            db.Review.findAll({
-              include: [
-                {
-                  model: db.User
-                }
-              ],
-              attributes: ["id", "reviewText", "score", "title", "IMDBid"],
-              where: {
-                userId: userId
-              },
-              order: [["createdAt", "DESC"]],
-              limit: 10
-            }).then(result => {
-              const reviews = result.map(review => {
-                return {
-                  id: review.dataValues.id,
-                  reviewText: review.dataValues.reviewText,
-                  score: review.dataValues.score,
-                  title: review.dataValues.title,
-                  IMDBid: review.dataValues.IMDBid,
-                  username: review.dataValues.User.dataValues.username
-                };
-              });
-              const data = {
-                username: username,
-                followingCount: followingCount,
-                reviewCount: reviewCount,
-                reviews: reviews
-              };
-              console.log(data);
+            const loginUserID = req.user.id;
 
-              //call handlebars render with data
-              res.render("user", data);
+            //get list of users that user follows
+            db.Follow.findAll({
+              attributes: ["followedId"],
+              where: {
+                userId: req.user.id
+              }
+            }).then(result => {
+              const usersFollowed = result.map(
+                user => user.dataValues.followedId
+              );
+
+              let alreadyFollowed = false;
+              if (usersFollowed.indexOf(userId) > -1) {
+                alreadyFollowed = true;
+              }
+
+              db.Review.findAll({
+                include: [
+                  {
+                    model: db.User
+                  }
+                ],
+                attributes: ["id", "reviewText", "score", "title", "IMDBid"],
+                where: {
+                  userId: userId
+                },
+                order: [["createdAt", "DESC"]],
+                limit: 10
+              }).then(result => {
+                const reviews = result.map(review => {
+                  return {
+                    id: review.dataValues.id,
+                    reviewText: review.dataValues.reviewText,
+                    score: review.dataValues.score,
+                    title: review.dataValues.title,
+                    IMDBid: review.dataValues.IMDBid,
+                    username: review.dataValues.User.dataValues.username
+                  };
+                });
+                const data = {
+                  loginUserId: loginUserID,
+                  profileUserId: userId,
+                  alreadyFollowed: alreadyFollowed,
+                  username: username,
+                  followingCount: followingCount,
+                  reviewCount: reviewCount,
+                  reviews: reviews
+                };
+                console.log(data);
+
+                //call handlebars render with data
+                res.render("user", data);
+              });
             });
           });
         });
