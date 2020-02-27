@@ -6,8 +6,7 @@ $(document).ready(function() {
     if (e.target.text === "Users") {
       window.location.href = `/users/${searchValue}`;
     } else if (e.target.text === "Movies") {
-        window.location.href = `/api/movies/${searchValue}`;
-      }}
-    )
+      window.location.href = `/api/movies/${searchValue}`;
+    }
   });
-// });
+});
