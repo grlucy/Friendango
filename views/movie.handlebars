@@ -1,141 +1,174 @@
 <body>
- <!-- Navigation Bar -->
- {{> navbar/navbar-logged-in}}
- <!-- Movie Title Section -->
- <section class="bg-grey">
-  <div class="container">
-   <div class="row">
-    <div class="col-md-12 text-center topBotPad">
-     <h1 class="font-weight-bold">
-      <!-- Insert movie title below -->
-      {{title}}
-     </h1>
-     <h4>
-      <!-- Insert average review score below -->
-      Average Score: {{avgScore}}
-     </h4>
-     <!-- Write a review button -->
-     <a href="/create/{{imdbId}}">
-      <button class="btn mt-3 btn-dark">Write a Review</button>
-     </a>
-    </div>
-   </div>
-  </div>
- </section>
- <!-- Movie info section -->
- <section>
-  <div class="container">
-   <div class="row">
-    <div class="col-sm-5 topBotPad text-sm-right">
-     <!-- Insert movie poster url below -->
-     <img class="omdb-poster" src="{{posterURL}}" />
-    </div>
-    <div class="col-sm-7 topBotPad">
-     <div class="movie-details">
-      <p>
-       <span class="font-weight-bold">Release Date: </span>
-       <!-- Insert movie release date below -->
-       {{releaseDate}}
-      </p>
-      <p>
-       <span class="font-weight-bold">Rating: </span>
-       <!-- Insert movie rating below -->
-       {{rating}}
-      </p>
-      <p class="font-weight-bold">Summary:</p>
-      <p>
-       <!-- Insert movie summary below -->
-       {{plot}}
-      </p>
-     </div>
-    </div>
-   </div>
-  </div>
-  </div>
- </section>
- <!-- Chart Section -->
- <section class="bg-grey">
-  <div class="container">
-   <div class="row">
-    <div class="col-md-12 text-center topBotPad" id="movie-chart">
-     <h4 class="font-weight-light">
-      Review Score Breakdown
-     </h4>
-     <!-- Chart -->
-     <canvas id="movieChart" width="400" height="140"></canvas>
-    </div>
-   </div>
-  </div>
- </section>
- <!-- Movie's Reviews Section -->
- <section>
-  <div class="container">
-   <div class="row spacer"></div>
-   <!-- START OF LOOP THROUGH REVIEW DATA -->
-   {{#each reviews}}
-   {{> reviews/review-block}}
-   {{/each}}
-   <!-- END OF LOOP THROUGH REVIEW DATA -->
-  </div>
- </section>
- <!-- Script for Chart.JS -->
- <script type="text/javascript">
+    <!-- Navigation Bar -->
+    {{> navbar/navbar-logged-in}}
+    <!-- Movie Title Section -->
+    <section class="bg-grey">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center topBotPad">
+                    <h1 class="font-weight-bold">
+                        <!-- Insert movie title below -->
+                        {{title}}
+                    </h1>
+                    <h4>
+                        <!-- Insert average review score below -->
+                        Average Score: {{avgScore}}
+                    </h4>
+                    <!-- Write a review button -->
+                    <a href="/create/{{imdbId}}">
+                        <button class="btn mt-3 btn-dark">Write a Review</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Movie info section -->
+    <section>
+        <div class="container">
+            <div class="row">
+                <div class="col-sm-5 topBotPad text-sm-right">
+                    <!-- Insert movie poster url below -->
+                    <img class="omdb-poster" src="{{posterURL}}" />
+                </div>
+                <div class="col-sm-7 topBotPad">
+                    <div class="movie-details">
+                        <p>
+                            <span class="font-weight-bold">Release Date: </span>
+                            <!-- Insert movie release date below -->
+                            {{releaseDate}}
+                        </p>
+                        <p>
+                            <span class="font-weight-bold">Rating: </span>
+                            <!-- Insert movie rating below -->
+                            {{rating}}
+                        </p>
+                        <p class="font-weight-bold">Summary:</p>
+                        <p>
+                            <!-- Insert movie summary below -->
+                            {{plot}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+    <!-- Chart Section -->
+    <section class="bg-grey">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12 text-center topBotPad" id="movie-chart">
+                    <h4 class="font-weight-light">
+                        Review Score Breakdown
+                    </h4>
+                    <!-- Chart -->
+                    <canvas id="movieChart" width="400" height="140"></canvas>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- Movie's Reviews Section -->
+    <section>
+        <div class="container">
+            <div class="row spacer"></div>
+            <!-- START OF LOOP THROUGH REVIEW DATA -->
+            {{#each reviews}}
+            {{> reviews/review-block}}
+            {{/each}}
+            <!-- END OF LOOP THROUGH REVIEW DATA -->
+        </div>
+    </section>
 
-  const ctx = document.getElementById("movieChart").getContext("2d");
-  const movieChart = new Chart(ctx, {
-   type: "horizontalBar",
-   data: {
-    labels: ["9 - 10", "7 - 8", "5 - 6", "3 - 4", "1 - 2"],
-    datasets: [
-     {
-      label: "% of Scores in This Range",
-      data: [65, 20, 0, 5, 10],
-      backgroundColor: [
-       "rgba(255, 99, 132, 0.6)",
-       "rgba(54, 162, 235, 0.6)",
-       "rgba(255, 206, 86, 0.6)",
-       "rgba(91, 155, 105, 0.6)",
-       "rgba(153, 102, 255, 0.6)"
-      ],
-      borderColor: [
-       "rgba(255, 99, 132, 1)",
-       "rgba(54, 162, 235, 1)",
-       "rgba(255, 206, 86, 1)",
-       "rgba(91, 155, 105, 1)",
-       "rgba(153, 102, 255, 1)"
-      ],
-      borderWidth: 1
-     }
-    ]
-   },
-   options: {
-    legend: {
-     display: false
-    },
-    scales: {
-     xAxes: [
-      {
-       ticks: {
-        beginAtZero: true,
-        max: 100,
-        callback: function (value) {
-         return value + "%";
+    <!--Hidden inputs with chart data -->
+    {{#each scoreCounts}}
+    <input type="hidden" id="count{{score}}" value="{{count}}">
+    {{/each}}
+
+    <!-- Script for Chart.JS -->
+    <script type="text/javascript">
+
+        // Map scores from hidden inputs
+        let scoreMap = {};
+        for (let i = 1; i < 11; i++) {
+            let score = i;
+            let scoreVal = $(`#count${score}`).val();
+            if (scoreVal === undefined) {
+                scoreMap[score] = 0;
+            } else {
+                scoreMap[score] = scoreVal;
+            }
         }
-       }
-      }
-     ],
-     yAxes: [
-      {
-       gridLines: {
-        display: false
-       }
-      }
-     ]
-    }
-   }
-  });
 
- </script>
- <script type="text/javascript" src="/js/members.js"></script>
- <script type="text/javascript" src="/js/navbar.js"></script>
+        // Combine the mapped scores into blocks
+        let scoreBlocks = {};
+        scoreBlocks["1 - 2"] = parseInt(scoreMap[1]) + parseInt(scoreMap[2]);
+        scoreBlocks["3 - 4"] = parseInt(scoreMap[3]) + parseInt(scoreMap[4]);
+        scoreBlocks["5 - 6"] = parseInt(scoreMap[5]) + parseInt(scoreMap[6]);
+        scoreBlocks["7 - 8"] = parseInt(scoreMap[7]) + parseInt(scoreMap[8]);
+        scoreBlocks["9 - 10"] = parseInt(scoreMap[9]) + parseInt(scoreMap[10]);
+
+        // Calculate the total number of scores that exist for the movie
+        let totalScoreCount = parseInt(scoreBlocks["1 - 2"]) + parseInt(scoreBlocks["3 - 4"]) + parseInt(scoreBlocks["5 - 6"]) + parseInt(scoreBlocks["7 - 8"]) + parseInt(scoreBlocks["9 - 10"]);
+
+        // Create an array of the percentage of total scores that fall into each score block
+        let dataArray = [parseInt(scoreBlocks["9 - 10"]) / totalScoreCount * 100, parseInt(scoreBlocks["7 - 8"]) / totalScoreCount * 100, parseInt(scoreBlocks["5 - 6"]) / totalScoreCount * 100, parseInt(scoreBlocks["3 - 4"]) / totalScoreCount * 100, parseInt(scoreBlocks["1 - 2"]) / totalScoreCount * 100];
+
+        // Create chart
+        const ctx = document.getElementById("movieChart").getContext("2d");
+        const movieChart = new Chart(ctx, {
+            type: "horizontalBar",
+            data: {
+                labels: ["9 - 10", "7 - 8", "5 - 6", "3 - 4", "1 - 2"],
+                datasets: [
+                    {
+                        label: "% of Scores in This Range",
+                        data: dataArray,
+                        backgroundColor: [
+                            "rgba(255, 99, 132, 0.6)",
+                            "rgba(54, 162, 235, 0.6)",
+                            "rgba(255, 206, 86, 0.6)",
+                            "rgba(91, 155, 105, 0.6)",
+                            "rgba(153, 102, 255, 0.6)"
+                        ],
+                        borderColor: [
+                            "rgba(255, 99, 132, 1)",
+                            "rgba(54, 162, 235, 1)",
+                            "rgba(255, 206, 86, 1)",
+                            "rgba(91, 155, 105, 1)",
+                            "rgba(153, 102, 255, 1)"
+                        ],
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                scales: {
+                    xAxes: [
+                        {
+                            ticks: {
+                                beginAtZero: true,
+                                max: 100,
+                                callback: function (value) {
+                                    return value + "%";
+                                }
+                            }
+                        }
+                    ],
+                    yAxes: [
+                        {
+                            gridLines: {
+                                display: false
+                            }
+                        }
+                    ]
+                }
+            }
+        });
+
+    </script>
+    <script type="text/javascript" src="/js/members.js"></script>
+    <script type="text/javascript" src="/js/navbar.js"></script>
 </body>
