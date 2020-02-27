@@ -4,6 +4,7 @@ var passport = require("../config/passport");
 const axios = require("axios");
 const dex = require("../controllers/index-controller");
 const mv = require("../controllers/movie-controller");
+const dash = require("../controllers/dashboard-controller");
 
 // Requiring path to so we can use relative routes to our HTML files
 var path = require("path");
@@ -75,76 +76,98 @@ module.exports = function(app) {
 
   //logged in users at route "/" will redirect here - should serve up index.handlebars, passing logged-in-appropriate data
   app.get("/dashboard", isAuthenticated, function(req, res) {
-    db.Follow.findAll({
-      attributes: ["followedId"],
-      where: {
-        userId: req.user.id
-      }
-    }).then(result => {
-      const usersFollowed = result.map(user => user.dataValues.followedId);
-
-      db.Review.findAll({
-        attributes: [
-          "title",
-          "IMDBid",
-          ["AVG(score)", "avgScore"],
-          "posterURL"
-        ],
-        where: {
-          userId: {
-            [Op.or]: usersFollowed
-          }
-        },
-        group: ["IMDBid"],
-        order: [
-          [db.sequelize.fn("COUNT", db.sequelize.col("IMDBid")), "DESC"],
-          [db.sequelize.col("avgScore"), "DESC"]
-        ],
-        limit: 5
-      }).then(result => {
-        const movies = result.map(movie => movie.dataValues);
-        movies.sort((a, b) => {
-          return b.avgScore - a.avgScore;
-        });
-
-        db.Review.findAll({
-          include: [
-            {
-              model: db.User
-            }
-          ],
-          attributes: ["id", "reviewText", "score", "title", "IMDBid"],
-          where: {
-            IMDBid: {
-              [Op.or]: movies.map(movie => movie.IMDBid)
-            },
-            userId: {
-              [Op.or]: usersFollowed
-            }
-          },
-          order: [["createdAt", "DESC"]],
-          limit: 10
-        }).then(result => {
-          const reviews = result.map(review => {
-            return {
-              id: review.dataValues.id,
-              reviewText: review.dataValues.reviewText,
-              score: review.dataValues.score,
-              title: review.dataValues.title,
-              IMDBid: review.dataValues.IMDBid,
-              username: review.dataValues.User.dataValues.username
+    dash.getUsersFollowed(req.user.id)
+    .then(result => {
+      if(result === null) {  //no followed users
+        dash.getTopMovies([])
+        .then(result => {
+          if(result === null) {  //no reviews in db
+            const data = {
+              movies: [],
+              reviews: []
             };
-          });
-          const data = {
-            movies: movies,
-            reviews: reviews
-          };
-          // console.log(data);
-
-          //call handlebars render with data
-          res.render("user-dashboard", data);
+            console.log(data);
+  
+            //call handlebars render with data
+            res.render("user-dashboard", data);
+          }
+          else {  //movies found
+            const movies = result;
+            movies.sort((a, b) => {
+              return b.avgScore - a.avgScore;
+            });
+            dash.getRecentReviews(movies, [])
+            .then(result => {
+              const reviews = result;
+              const data = {
+                movies: movies,
+                reviews: reviews
+              };
+              console.log(data);
+    
+              //call handlebars render with data
+              res.render("user-dashboard", data);    
+            });
+          }
         });
-      });
+      }
+      else {  //there are followed users
+        const usersFollowed = result;
+        dash.getTopMovies(usersFollowed)
+        .then(result => {
+          if(result === null) {  //no reviews in db from followed users
+            dash.getTopMovies([])  //look for reviews from anyone
+            .then(result => {
+              if(result === null) {  //no reviews in db
+                const data = {
+                  movies: [],
+                  reviews: []
+                };
+                console.log(data);
+      
+                //call handlebars render with data
+                res.render("user-dashboard", data);
+              }
+              else {  //movies found
+                const movies = result;
+                movies.sort((a, b) => {
+                  return b.avgScore - a.avgScore;
+                });
+                dash.getRecentReviews(movies, [])
+                .then(result => {
+                  const reviews = result;
+                  const data = {
+                    movies: movies,
+                    reviews: reviews
+                  };
+                  console.log(data);
+        
+                  //call handlebars render with data
+                  res.render("user-dashboard", data);    
+                });
+              }
+            });
+          }
+          else {  //reviews from followed users found
+            const movies = result;
+            movies.sort((a, b) => {
+              return b.avgScore - a.avgScore;
+            });
+            dash.getRecentReviews(movies, usersFollowed)
+            .then(result => {
+              const reviews = result;
+              const data = {
+                movies: movies,
+                reviews: reviews
+              };
+              console.log(data);
+    
+              //call handlebars render with data
+              res.render("user-dashboard", data);    
+            });
+          }
+        });
+      }
     });
   });
 
