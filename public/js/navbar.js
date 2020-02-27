@@ -9,4 +9,8 @@ $(document).ready(function() {
       window.location.href = `/api/movies/${searchValue}`;
     }
   });
+  const searchForm = $("#search-form");
+  searchForm.on("submit", function(e) {
+    e.preventDefault();
+  });
 });

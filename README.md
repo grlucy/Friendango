@@ -1,12 +1,55 @@
 # Friendango
 
+Deployed at: [put Heroku link here once deployed]
+
 ## Description
 
-A social network for movie reviews
+A social network for movie reviews that enables users to submit their own reviews and to see the reviews of their friends and any other users they choose to follow. It includes charts that analyze the popularity, average scores, and score distributions for movies that have been reviewed on the site. Friendango also includes functionality to search for specific movies or users. Users can help the social network grow by sharing their profile or a link to an individual review with their friends.
 
 | Technologies used                                                                                                                                          |
 | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Node.js, Express, MySQL, Sequelize, Handlebars, JavaScript, jQuery, Heroku, JawsDB, OMDB API, HTML, CSS, Bootstrap, ESLint, Dotenv environmental variables |
+
+## Demo
+
+[put demo GIF here once deployed]
+
+## Installation
+
+In the Friendango directory, **create a .env file** and type the following:
+
+```
+password="(your MySQL password)"
+apikey="(your OMDB API key)"
+```
+
+Then save the .env file.
+
+In **MySQL Workbench**, create a local database by entering
+
+```
+CREATE DATABASE friendango;
+```
+
+Depending on your MySQL settings, you may also need to enter
+
+```
+SET GLOBAL sql_mode=(SELECT REPLACE(@@sql_mode,'ONLY_FULL_GROUP_BY',''));
+```
+
+From the **command line**, open the Friendango directory and enter
+
+```sh
+npm install
+```
+
+Once the dependencies are installed, enter
+
+```sh
+node server.js
+```
+
+A link to the local server will be logged.
 
 ## Credits
 
