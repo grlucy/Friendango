@@ -160,7 +160,7 @@ module.exports = function(app) {
             movies: movies,
             reviews: reviews
           };
-          console.log(data);
+          // console.log(data);
 
           //call handlebars render with data
           res.render("user-dashboard", data);
