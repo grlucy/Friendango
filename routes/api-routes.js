@@ -1,6 +1,9 @@
 // Requiring our models and passport as we've configured it
 var db = require("../models");
 var passport = require("../config/passport");
+const axios = require("axios");
+
+var isAuthenticated = require("../config/middleware/isAuthenticated");
 
 module.exports = function(app) {
   // Using the passport.authenticate middleware with our local strategy.
@@ -47,6 +50,17 @@ module.exports = function(app) {
         id: req.user.id
       });
     }
+  });
+
+  app.get("/api/movies/:title", isAuthenticated, function(req, res) {
+    //search OMDB for movie by title, get its imdbId, and call the "/movies/:imdbId" route
+    const title = req.params.title.trim();
+    axios
+      .get(`http://www.omdbapi.com/?t=${title}&apikey=${process.env.apikey}`)
+      .then(function(response) {
+        const imdbId = response.data.imdbID;
+        res.redirect(`/movies/${imdbId}`);
+      });
   });
 
   // "Post" route for creating a review
