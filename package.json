@@ -1,5 +1,5 @@
 {
-  "name": "Friendango",
+  "name": "friendango",
   "version": "1.0.0",
   "description": "A social network for movie reviews",
   "main": "server.js",
