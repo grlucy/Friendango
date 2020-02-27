@@ -91,4 +91,16 @@ module.exports = function(app) {
   });
 
   // "Post" route for creating a follow relationship between follower and followee
+  app.post("/api/follow/", function(req, res) {
+    db.Follow.create({
+      userId: req.body.followerID,
+      followedId: req.body.followedID
+    })
+      .then(function() {
+        res.status(200).end();
+      })
+      .catch(function(err) {
+        res.status(401).json(err);
+      });
+  });
 };
