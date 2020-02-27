@@ -6,11 +6,8 @@ $(document).ready(function() {
     if (e.target.text === "Users") {
       window.location.href = `/users/${searchValue}`;
     } else if (e.target.text === "Movies") {
-      $.get(`https://www.omdbapi.com/?t=${searchValue}&apikey=trilogy`)
-      .then(function(response){
-        const imdbID = response.imdbID;
-        window.location.href = `/movies/${imdbID}`;
-      });
-    }
+        window.location.href = `/api/movies/${searchValue}`;
+      }}
+    )
   });
-});
+// });
