@@ -208,9 +208,10 @@ module.exports = function(app) {
                 user => user.dataValues.followedId
               );
 
-              console.log("*****************************************");
-              console.log(usersFollowed); // Use this array to add if/else for showing "follow" button on user profile
-              console.log("*****************************************");
+              let alreadyFollowed = false;
+              if (usersFollowed.indexOf(userId) > -1) {
+                alreadyFollowed = true;
+              }
 
               db.Review.findAll({
                 include: [
@@ -238,6 +239,7 @@ module.exports = function(app) {
                 const data = {
                   loginUserId: loginUserID,
                   profileUserId: userId,
+                  alreadyFollowed: alreadyFollowed,
                   username: username,
                   followingCount: followingCount,
                   reviewCount: reviewCount,
