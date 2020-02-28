@@ -3,10 +3,12 @@ $(document).ready(function() {
   searchType.on("click", function(e) {
     const searchValue = $("#searchValue").val();
     e.preventDefault();
-    if (e.target.text === "Users") {
-      window.location.href = `/users/${searchValue}`;
-    } else if (e.target.text === "Movies") {
-      window.location.href = `/api/movies/${searchValue}`;
+    if(searchValue !== "") {
+      if (e.target.text === "Users") {
+        window.location.href = `/users/${searchValue}`;
+      } else if (e.target.text === "Movies") {
+        window.location.href = `/api/movies/${searchValue}`;
+      }  
     }
   });
   const searchForm = $("#search-form");
