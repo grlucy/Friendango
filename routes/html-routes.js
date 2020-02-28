@@ -189,7 +189,7 @@ module.exports = function(app) {
             userId: userId
           }
         }).then(result => {
-          const followingCount = result.count;
+          const followingCount = result.count - 1;  //adjusting for follow-self relationship
 
           db.Review.findAndCountAll({
             where: {
@@ -211,9 +211,17 @@ module.exports = function(app) {
                 user => user.dataValues.followedId
               );
 
-              let alreadyFollowed = false;
-              if (usersFollowed.indexOf(userId) > -1) {
-                alreadyFollowed = true;
+              let userStatus = {
+                followed: false,
+                notFollowed: false,
+                self: false
+              };
+              if (usersFollowed.indexOf(userId) > -1 && userId !== req.user.id) {
+                userStatus.followed = true;
+              } else if (userId === req.user.id) {
+                userStatus.self = true;
+              } else {
+                userStatus.notFollowed = true;
               }
 
               db.Review.findAll({
@@ -242,7 +250,7 @@ module.exports = function(app) {
                 const data = {
                   loginUserId: loginUserID,
                   profileUserId: userId,
-                  alreadyFollowed: alreadyFollowed,
+                  userStatus: userStatus,
                   username: username,
                   followingCount: followingCount,
                   reviewCount: reviewCount,
