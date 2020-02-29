@@ -1,6 +1,6 @@
 # Friendango
 
-Deployed at: [put Heroku link here once deployed]
+Deployed at: https://shrouded-beyond-30999.herokuapp.com/
 
 ## Description
 
@@ -12,7 +12,7 @@ A social network for movie reviews that enables users to submit their own review
 
 ## Demo
 
-[put demo GIF here once deployed]
+![Friendango Demo](/reference/demo/Friendango-demo.gif)
 
 ## Installation
 
