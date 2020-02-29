@@ -2,8 +2,6 @@
 var express = require("express");
 var session = require("express-session");
 
-const Sequelize = require("sequelize");
-
 const SequelizeStore = require("connect-session-sequelize")(session.Store);
 
 // Requiring passport as we've configured it
