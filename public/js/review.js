@@ -22,7 +22,7 @@ $(document).ready(function() {
       username: username
     };
 
-    if (!reviewData.reviewText) {
+    if (!reviewData.reviewText || !reviewData.score) {
       return;
     }
 
