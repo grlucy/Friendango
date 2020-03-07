@@ -1,10 +1,11 @@
 $(document).ready(function() {
   const searchType = $(".dropdown-item");
   searchType.on("click", function(e) {
+    e.preventDefault();
+
     const searchValue = $("#searchValue")
       .val()
       .trim();
-    e.preventDefault();
     if (searchValue !== "") {
       if (e.target.text === "Users") {
         window.location.href = `/users/${searchValue}`;
