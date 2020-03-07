@@ -1,14 +1,14 @@
 # Friendango
 
-Deployed at: https://shrouded-beyond-30999.herokuapp.com/
+Deployed at: https://friendango.herokuapp.com/
 
 ## Description
 
 A social network for movie reviews that enables users to submit their own reviews and to see the reviews of their friends and any other users they choose to follow. It includes charts that analyze the popularity, average scores, and score distributions for movies that have been reviewed on the site. Friendango also includes functionality to search for specific movies or users. Users can help the social network grow by sharing their profile or a link to an individual review with their friends.
 
-| Technologies used                                                                                                                                          |
-| ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Node.js, Express, MySQL, Sequelize, Handlebars, JavaScript, jQuery, Heroku, JawsDB, OMDB API, HTML, CSS, Bootstrap, ESLint, Dotenv environmental variables |
+| Technologies used                                                                                                                                              |
+| -------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| Node.js, Express, MySQL, Sequelize, Express Handlebars, Passport, JavaScript, jQuery, Heroku, JawsDB, OMDB API, HTML, CSS, Bootstrap, Chart.js, ESLint, Dotenv |
 
 ## Demo
 
